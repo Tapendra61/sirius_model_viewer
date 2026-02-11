@@ -7,6 +7,7 @@ add_executable(model_viewer
 	src/main.cpp
 	src/glad.c
 	src/core/application.cpp
+	src/core/window.cpp
 )
 
 target_compile_features(model_viewer PRIVATE cxx_std_20)
@@ -17,6 +18,6 @@ target_include_directories(model_viewer PRIVATE
 )
 
 target_link_libraries(model_viewer PRIVATE
-	${CMAKE_SOURCE_DIR}/dependencies/libs/libglfw3.a
-	${CMAKE_SOURCE_DIR}/dependencies/libs/libassimp.a
+	${CMAKE_SOURCE_DIR}/dependencies/libs/glfw3.lib
+	${CMAKE_SOURCE_DIR}/dependencies/libs/assimp.lib
 )
