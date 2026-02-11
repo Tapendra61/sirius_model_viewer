@@ -1,0 +1,18 @@
+# Builds
+build/
+
+# Outputs
+*.o
+*.exe
+*.app
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+MakeFile
+comile_commands.json
+cmake_install.cmake
+
+# Ninja
+.ninja_deps
+.ninja_log
