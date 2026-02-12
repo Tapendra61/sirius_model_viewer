@@ -16,9 +16,9 @@ class Window {
   public:
 	Window(const std::string &title, const int width, const int height, bool vsync);
 	Window(const Window&) = delete;
-	Window operator=(const Window&) = delete;
-	Window( Window&&) = delete;
-	Window operator=(Window&&) = delete;
+	Window& operator=(const Window&) = delete;
+	Window (Window&&) = delete;
+	Window& operator=(Window&&) = delete;
 	
 	GLFWwindow *get_raw_window_handle() const;
 	int get_width() const { return width_; }

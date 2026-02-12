@@ -45,7 +45,7 @@ Window::Window(const std::string &title, const int width, const int height,
 								   glfw_frame_buffer_size_callback);
 	
 	glEnable(GL_DEPTH_TEST);
-	sr::log_info("Window constructor completed.");
+	sr::log_trace("Window constructor completed.");
 }
 
 GLFWwindow *Window::get_raw_window_handle() const { return glfw_window_; }
