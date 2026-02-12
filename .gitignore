@@ -16,3 +16,7 @@ cmake_install.cmake
 # Ninja
 .ninja_deps
 .ninja_log
+
+# Caches
+.cache/
+.cache/*

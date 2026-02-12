@@ -32,8 +32,7 @@ Window::Window(const std::string &title, const int width, const int height,
 	}
 
 	glfwMakeContextCurrent(glfw_window_);
-	if (enable_vsync_)
-		glfwSwapInterval(1);
+	glfwSwapInterval(enable_vsync_? 1 : 0);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		sr::log_error("Failed to initialize GLAD!");
@@ -44,7 +43,8 @@ Window::Window(const std::string &title, const int width, const int height,
 	glViewport(0, 0, width_, height_);
 	glfwSetFramebufferSizeCallback(glfw_window_,
 								   glfw_frame_buffer_size_callback);
-
+	
+	glEnable(GL_DEPTH_TEST);
 	sr::log_info("Window constructor completed.");
 }
 
@@ -59,6 +59,39 @@ void Window::glfw_frame_buffer_size_callback(GLFWwindow *window, int width,
 		self->width_ = width;
 		self->height_ = height;
 	}
+}
+
+bool Window::should_close() const {
+	return glfwWindowShouldClose(glfw_window_);
+}
+
+void Window::set_clear_color(const glm::vec4& new_color) {
+	clear_color_ = new_color;
+}
+
+void Window::set_clear_color(const float& r, const float& g, const float& b, const float& a) {
+	clear_color_.x = r;
+	clear_color_.y = g;
+	clear_color_.z = b;
+	clear_color_.w = a;
+}
+
+void Window::begin_drawing() const {
+	glClearColor(clear_color_.x, clear_color_.y, clear_color_.z, clear_color_.w);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Window::end_drawing() const {
+	swap_buffers();
+	poll_events();
+}
+
+void Window::poll_events() const {
+	glfwPollEvents();
+}
+
+void Window::swap_buffers() const {
+	glfwSwapBuffers(glfw_window_);
 }
 
 Window::~Window() {
