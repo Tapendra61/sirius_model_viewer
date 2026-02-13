@@ -23,6 +23,10 @@ class Application {
 	Application(Application&&)=delete;
 	Application& operator=(Application&&)=delete;
 	
+	const AppConfig& get_app_config() const { return app_config_; }
+	
+	void parse_arguments(const unsigned int argc, char **argv);
+	
 	void run();
 	~Application();
 };
