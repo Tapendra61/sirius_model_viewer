@@ -3,7 +3,7 @@
 #include "sirius_logger/log_level.h"
 
 int main(int argc, char **argv) {
-	sr::init_logger(sr::LogLevel::Trace);
+	sr::init_logger(sr::LogLevel::Info);
 	
 	AppConfig config;
 	config.window_title =  "Sirius Model Viewer";

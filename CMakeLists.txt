@@ -8,6 +8,8 @@ add_executable(model_viewer
 	src/glad.c
 	src/core/application.cpp
 	src/core/window.cpp
+	src/renderer/renderer.cpp
+	src/renderer/shader.cpp
 )
 
 target_compile_features(model_viewer PRIVATE cxx_std_20)
