@@ -7,7 +7,7 @@
 #include "core/window.h"
 #include "sirius_logger/log.h"
 
-Application::Application(const unsigned int argc, char **argv, const std::string &title, const int width, const int height, bool vsync) {
+Application::Application(const unsigned int argc, char **argv, AppConfig app_config) {
 	if (!glfwInit()) {
 		const char *glfw_error = nullptr;
 		int error_code = glfwGetError(&glfw_error);
@@ -19,7 +19,7 @@ Application::Application(const unsigned int argc, char **argv, const std::string
 		throw std::runtime_error("GLFW initialization failed!");
 	}
 
-	window = std::make_unique<Window>(title, width, height, vsync);
+	window = std::make_unique<Window>(app_config.window_title, app_config.window_width, app_config.window_height, app_config.enable_vsync);
 	
 	sr::log_trace("Application constructor completed.");
 }
