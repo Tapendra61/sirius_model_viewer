@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 #include "glad/glad.h"
 
@@ -36,8 +37,8 @@ Shader::Shader(const std::string& v_shader_path, const std::string& f_shader_pat
 	}
 	catch(const std::ifstream::failure& error) {
 		sr::log_error("Exception while reading/closing file. Error: {}", error.what());
+		throw std::runtime_error("Shader file reading failed!");
 	}
-	
 	
 	unsigned int vertex_shader, fragment_shader;
 	

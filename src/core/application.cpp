@@ -20,7 +20,9 @@ Application::Application(const unsigned int argc, char **argv, AppConfig app_con
 	}
 	parse_arguments(argc, argv);
 	
-	window = std::make_unique<Window>(app_config.window_title, app_config.window_width, app_config.window_height, app_config.enable_vsync);
+	window_ = std::make_unique<Window>(app_config.window_title, app_config.window_width, app_config.window_height, app_config.enable_vsync);
+	renderer_ = std::make_unique<Renderer>();
+	sr::log_info("Title: {}", app_config_.window_title);
 	
 	sr::log_trace("Application constructor completed.");
 }
@@ -28,10 +30,12 @@ Application::Application(const unsigned int argc, char **argv, AppConfig app_con
 void Application::run() {
 	sr::log_trace("Application running.");
 	
-	while(!window->should_close()) {
-		window->begin_drawing();
+	while(!window_->should_close()) {
+		window_->begin_drawing();
 		
-		window->end_drawing();
+		renderer_->render();
+		
+		window_->end_drawing();
 	}
 }
 
@@ -46,7 +50,7 @@ void Application::parse_arguments(const unsigned int argc, char **argv) {
 }
 
 Application::~Application() {
-	window.reset();
+	window_.reset();
 	glfwTerminate();
 	sr::log_trace("Application terminated.");
 }

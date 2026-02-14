@@ -1,7 +1,9 @@
 #pragma once
 
-#include "core/window.h"
 #include <memory>
+
+#include "core/window.h"
+#include "renderer/renderer.h"
 
 struct AppConfig {
 	std::string model_path = "";
@@ -14,7 +16,8 @@ struct AppConfig {
 class Application {
   private:
   	AppConfig app_config_;
-	std::unique_ptr<Window> window;
+	std::unique_ptr<Window> window_;
+	std::unique_ptr<Renderer> renderer_;
 
   public:
 	Application(const unsigned int argc, char **argv, AppConfig app_config = AppConfig());
