@@ -11,6 +11,11 @@ class Shader {
 		
 	public:
 		Shader(const std::string& v_shader_path, const std::string& f_shader_path);
+		Shader(const Shader&)=delete;
+		Shader& operator=(const Shader&) = delete;
+		Shader(Shader&&) = delete;
+		Shader& operator=(Shader&&)=delete;
+		
 		~Shader();
 		
 		unsigned int get_shader_id() const { return program_id_; }
