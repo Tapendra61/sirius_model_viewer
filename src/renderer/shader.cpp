@@ -71,6 +71,7 @@ void Shader::check_compile_errors(const CompileType compile_type, const unsigned
 		if(!success) {
 			glGetShaderInfoLog(id, log_length, &returned_log_length, info_log);
 			sr::log_error("Failed to compile shader of type: {}! Error:\n{}", get_compile_type_string(compile_type), info_log);
+			throw std::runtime_error("Shader compilation failed!");
 		}
 		return;
 	}
@@ -79,11 +80,40 @@ void Shader::check_compile_errors(const CompileType compile_type, const unsigned
 	if(!success) {
 		glGetProgramInfoLog(id, log_length, &returned_log_length, info_log);
 		sr::log_error("Failed to link program of type: {} with id {}! Error:\n{}", get_compile_type_string(compile_type), id, info_log);
+		throw std::runtime_error("Program linking failed!");
 	}
 }
 
 void Shader::use() const {
 	glUseProgram(program_id_);
+}
+
+void Shader::set_int(const std::string& name, const int value) const {
+	glUniform1i(glGetUniformLocation(program_id_, name.c_str()), value);
+}
+
+void Shader::set_float(const std::string& name, const float value) const {
+	glUniform1f(glGetUniformLocation(program_id_, name.c_str()), value);
+}
+
+void Shader::set_vec2(const std::string& name, const glm::vec2& value) const {
+	glUniform2fv(glGetUniformLocation(program_id_, name.c_str()), 1, &value[0]);
+}
+
+void Shader::set_vec3(const std::string& name, const glm::vec3& value) const {
+	glUniform3fv(glGetUniformLocation(program_id_, name.c_str()), 1, &value[0]);
+}
+
+void Shader::set_vec4(const std::string& name, const glm::vec4& value) const {
+	glUniform4fv(glGetUniformLocation(program_id_, name.c_str()), 1, &value[0]);
+}
+
+void Shader::set_mat3(const std::string& name, const glm::mat3& value) const {
+	glUniformMatrix3fv(glGetUniformLocation(program_id_, name.c_str()), 1, GL_FALSE, &value[0][0]);
+}
+
+void Shader::set_mat4(const std::string& name, const glm::mat4& value) const {
+	glUniformMatrix4fv(glGetUniformLocation(program_id_, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }
 
 std::string Shader::get_compile_type_string(CompileType compile_type) const {
@@ -97,4 +127,8 @@ std::string Shader::get_compile_type_string(CompileType compile_type) const {
 		default:
 			return "unknown";
 	}
+}
+
+Shader::~Shader() {
+	glDeleteProgram(program_id_);
 }
