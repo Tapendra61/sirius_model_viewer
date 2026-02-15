@@ -43,6 +43,11 @@ void Camera::add_pitch(float delta) {
 	update_camera_vectors();
 }
 
+void Camera::add_radius(float delta) {
+	radius_ += delta;
+	radius_ = glm::max(radius_, 0.1f);
+}
+
 void Camera::update_camera_vectors() {
 	glm::vec3 target(0.0f);
 	target.x = radius_ * cos(yaw_) * cos(pitch_);
