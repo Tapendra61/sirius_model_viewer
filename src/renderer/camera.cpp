@@ -32,11 +32,22 @@ glm::mat4 Camera::get_projection_matrix() const {
 	return glm::perspective(glm::radians(field_of_view_), aspect_ratio_, near_plane_, far_plane_);
 }
 
+void Camera::add_yaw(float delta) {
+	yaw_ += delta;
+	update_camera_vectors();
+}
+
+void Camera::add_pitch(float delta) {
+	pitch_ += delta;
+	pitch_ = glm::clamp(pitch_, -89.0f, 89.0f);
+	update_camera_vectors();
+}
+
 void Camera::update_camera_vectors() {
 	glm::vec3 target(0.0f);
-	target.x = radius_ * cos(glm::radians(yaw_)) * cos(glm::radians(pitch_));
-	target.y = radius_ * sin(glm::radians(pitch_));
-	target.z = radius_ * sin(glm::radians(yaw_)) * cos(glm::radians(pitch_));
+	target.x = radius_ * cos(yaw_) * cos(pitch_);
+	target.y = radius_ * sin(pitch_);
+	target.z = radius_ * sin(yaw_) * cos(pitch_);
 	
 	camera_position_ = target + camera_target_;
 	camera_forward_ = glm::normalize(camera_target_ - camera_position_);

@@ -36,5 +36,7 @@ class Camera {
 		glm::mat4 get_view_matrix() const;
 		glm::mat4 get_projection_matrix() const;
 		
+		void add_yaw(float delta);
+		void add_pitch(float delta);
 		void update_camera_vectors();
 };
