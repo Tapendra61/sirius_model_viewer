@@ -10,6 +10,7 @@ add_executable(model_viewer
 	src/core/window.cpp
 	src/renderer/renderer.cpp
 	src/renderer/shader.cpp
+	src/renderer/camera.cpp
 )
 
 target_compile_features(model_viewer PRIVATE cxx_std_20)
