@@ -3,6 +3,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include <cmath>
+
 Camera::Camera(int screen_width, int screen_height, glm::vec3 camera_position, glm::vec3 camera_target, float field_of_view, float near_plane, float far_plane) :
 	camera_position_(camera_position),
 	camera_target_(camera_target),
@@ -17,6 +19,8 @@ Camera::Camera(int screen_width, int screen_height, glm::vec3 camera_position, g
 }
 
 void Camera::update_aspect_ratio(const int new_screen_width, const int new_screen_height) {
+	screen_width_ = new_screen_width;
+	screen_height_ = new_screen_height;
 	aspect_ratio_ = static_cast<float>(new_screen_width) / static_cast<float>(new_screen_height);
 }
 
@@ -34,6 +38,7 @@ glm::mat4 Camera::get_projection_matrix() const {
 
 void Camera::add_yaw(float delta_rad) {
 	yaw_ += delta_rad;
+	yaw_ = std::fmod(yaw_, glm::two_pi<float>());
 	update_camera_vectors();
 }
 

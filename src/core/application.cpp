@@ -30,6 +30,8 @@ Application::Application(const unsigned int argc, char **argv, AppConfig app_con
 void Application::run() {
 	sr::log_trace("Application running.");
 	
+	renderer_->init();
+	
 	while(!window_->should_close()) {
 		window_->begin_drawing();
 		
