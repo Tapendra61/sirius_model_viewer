@@ -8,6 +8,7 @@ add_executable(model_viewer
 	src/glad.c
 	src/core/application.cpp
 	src/core/window.cpp
+	src/core/input.cpp
 	src/renderer/renderer.cpp
 	src/renderer/shader.cpp
 	src/renderer/camera.cpp
