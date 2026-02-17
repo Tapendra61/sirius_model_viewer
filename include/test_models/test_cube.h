@@ -69,9 +69,13 @@ class TestCube {
 		unsigned int cube_vao_ = 0, cube_vbo_ = 0;
 		Shader cube_shader_;
 		Camera& camera_;
+		glm::vec3 position_ = glm::vec3(0.0f, 0.0f, 0.0f);
 	
 	public:
 		TestCube(Camera& camera) : camera_(camera), cube_shader_("../shaders/test_cube/vertex.vert", "../shaders/test_cube/fragment.frag") {}
+		
+		glm::vec3 get_position() const { return position_; }
+		void set_position(const glm::vec3 new_position) { position_ = new_position; }
 		
 		void init() {
 			glGenVertexArrays(1, &cube_vao_);
@@ -95,7 +99,7 @@ class TestCube {
 			
 			glm::mat4 model(1.0f);
 			
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+			model = glm::translate(model, position_);
 			glm::mat4 view = camera_.get_view_matrix();
 			glm::mat4 projection = camera_.get_projection_matrix();
 			

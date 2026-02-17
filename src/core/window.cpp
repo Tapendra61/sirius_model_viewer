@@ -8,17 +8,14 @@
 
 #include "sirius_logger/log.h"
 
-Window::Window(const std::string &title, const int width, const int height,
-			   bool vsync)
+Window::Window(const std::string &title, const int width, const int height, bool vsync)
 	: title_(title), width_(width), height_(height), enable_vsync_(vsync) {
-
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	glfw_window_ =
-		glfwCreateWindow(width_, height_, title_.c_str(), nullptr, nullptr);
+	glfw_window_ = glfwCreateWindow(width_, height_, title_.c_str(), nullptr, nullptr);
 	if (!glfw_window_) {
 		const char *glfw_error = nullptr;
 		int error_code = glfwGetError(&glfw_error);
