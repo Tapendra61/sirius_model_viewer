@@ -32,6 +32,7 @@ void Application::run() {
 	renderer_->init();
 	
 	while(!window_->should_close()) {
+		compute_delta_time();
 		window_->begin_drawing();
 		
 		renderer_->render();
@@ -42,12 +43,19 @@ void Application::run() {
 
 void Application::parse_arguments(const unsigned int argc, char **argv) {
 	if(argc > 2) {
+		sr::log_info("Too many arguments!");
 		throw std::runtime_error("Too many arguments!\nUsage: sirius_model_viewer [model_path]");
 	}
 	
 	if(argc == 2) {
 		app_config_.model_path = argv[1];
 	}
+}
+
+void Application::compute_delta_time() {
+	float current_time = static_cast<float>(glfwGetTime());
+	delta_time_ = current_time - last_time_;
+	last_time_ = current_time;
 }
 
 Application::~Application() {

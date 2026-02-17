@@ -18,6 +18,8 @@ class Application {
   	AppConfig app_config_;
 	std::unique_ptr<Window> window_;
 	std::unique_ptr<Renderer> renderer_;
+	float delta_time_ = 0.0f;
+	float last_time_ = 0.0f;
 
   public:
 	Application(const unsigned int argc, char **argv, AppConfig app_config = AppConfig());
@@ -30,6 +32,8 @@ class Application {
 	
 	void parse_arguments(const unsigned int argc, char **argv);
 	
+	float get_delta_time() const { return delta_time_; }
+	void compute_delta_time();
 	void run();
 	~Application();
 };
