@@ -4,6 +4,7 @@
 
 #include "core/window.h"
 #include "renderer/renderer.h"
+#include "core/input.h"
 
 struct AppConfig {
 	std::string model_path = "";

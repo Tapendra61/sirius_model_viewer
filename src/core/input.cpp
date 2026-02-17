@@ -1,6 +1,8 @@
 #include "core/input.h"
 
 #include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
+
 
 void Input::init(GLFWwindow* window) {
 	window_ = window;
@@ -20,8 +22,7 @@ void Input::mouse_pos_callback(GLFWwindow* window, double x_pos, double y_pos) {
 	}
 	
 	mouse_position_ = { x_position, y_position };
-	
-	mouse_delta_. = mouse_position_ - last_mouse_position_;
+	mouse_delta_ = mouse_position_ - last_mouse_position_;
 	last_mouse_position_ = mouse_position_;
 }
 
