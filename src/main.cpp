@@ -4,6 +4,7 @@
 
 int main(int argc, char **argv) {
 	sr::init_logger(sr::LogLevel::Info);
+	sr::log_info("Main Program run.");
 	
 	AppConfig config;
 	config.window_title =  "Sirius Model Viewer";
