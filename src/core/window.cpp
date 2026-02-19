@@ -62,6 +62,10 @@ bool Window::should_close() const {
 	return glfwWindowShouldClose(glfw_window_);
 }
 
+void Window::set_should_close(bool value) {
+	glfwSetWindowShouldClose(glfw_window_, value);
+}
+
 void Window::set_clear_color(const glm::vec4& new_color) {
 	clear_color_ = new_color;
 }

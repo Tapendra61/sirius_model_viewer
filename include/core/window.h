@@ -27,6 +27,7 @@ class Window {
 	void set_clear_color(const glm::vec4& new_color);
 	void set_clear_color(const float& r, const float& g, const float& b, const float& a);
 	bool should_close() const;
+	void set_should_close(bool value);
 	void begin_drawing() const;
 	void end_drawing() const;
 	void poll_events() const;

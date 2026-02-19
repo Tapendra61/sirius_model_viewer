@@ -13,7 +13,8 @@
 Application::Application(const unsigned int argc, char **argv, AppConfig app_config) : app_config_(std::move(app_config)),
 	camera_(app_config_.window_width, app_config_.window_height),
 	camera_controller_(camera_) {
-	sr::log_info("Application Constructor called.");
+	sr::log_trace("Application Constructor body called.");
+	
 	if (!glfwInit()) {
 		const char *glfw_error = nullptr;
 		int error_code = glfwGetError(&glfw_error);
@@ -34,7 +35,7 @@ Application::Application(const unsigned int argc, char **argv, AppConfig app_con
 
 void Application::init() {
 	if(initialized_) return;
-	sr::log_info("Application init called.");
+	sr::log_trace("Application init called.");
 	
 	cube_ = std::make_unique<TestCube>(camera_);
 	cube_->init();
@@ -68,7 +69,7 @@ void Application::run() {
 
 void Application::process_input() {
 	if(Input::is_key_pressed(Key::ESCAPE)) {
-		window_->should_close();
+		window_->set_should_close(true);
 	}
 }
 
