@@ -29,15 +29,20 @@ Application::Application(const unsigned int argc, char **argv, AppConfig app_con
 void Application::run() {
 	sr::log_trace("Application running.");
 	
+	Input::init(window_->get_raw_window_handle());
 	renderer_->init();
 	
 	while(!window_->should_close()) {
 		compute_delta_time();
+		
+		window_->poll_events();
+		
 		window_->begin_drawing();
 		
 		renderer_->render();
 		
 		window_->end_drawing();
+		Input::update();
 	}
 }
 

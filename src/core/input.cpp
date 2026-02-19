@@ -30,6 +30,44 @@ glm::vec2 Input::get_mouse_delta() {
 	return mouse_delta_;
 }
 
+bool Input::is_key_pressed(Key key) {
+	if(!window_) return false;
+	
+	int glfw_key = to_glfw_key(key);
+	if(glfw_key == GLFW_KEY_UNKNOWN) return false;
+	
+	return glfwGetKey(window_, glfw_key) == GLFW_PRESS;
+}
+
+int Input::to_glfw_key(Key key) {
+	switch(key) {
+		case Key::A: return GLFW_KEY_A;
+		case Key::S: return GLFW_KEY_S;
+		case Key::D: return GLFW_KEY_D;
+		case Key::W: return GLFW_KEY_W;
+		case Key::ESCAPE: return GLFW_KEY_ESCAPE;
+		default: return GLFW_KEY_UNKNOWN;
+	}
+}
+
+bool Input::is_mouse_pressed(Mouse mouse) {
+	if(!window_) return false;
+	
+	int glfw_button = to_glfw_mouse(mouse);
+	if(glfw_button == -1) return false;
+	
+	return glfwGetMouseButton(window_, glfw_button) == GLFW_PRESS;
+}
+
+int Input::to_glfw_mouse(Mouse mouse) {
+	switch(mouse) {
+		case Mouse::LEFT_MOUSE: return GLFW_MOUSE_BUTTON_LEFT;
+		case Mouse::RIGHT_MOUSE: return GLFW_MOUSE_BUTTON_RIGHT;
+		case Mouse::MIDDLE_MOUSE: return GLFW_MOUSE_BUTTON_MIDDLE;
+		default: return -1;
+	}
+}
+
 void Input::update() {
 	mouse_delta_ = { 0.0f, 0.0f };
 }

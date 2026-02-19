@@ -30,6 +30,7 @@ Window::Window(const std::string &title, const int width, const int height, bool
 
 	glfwMakeContextCurrent(glfw_window_);
 	glfwSwapInterval(enable_vsync_? 1 : 0);
+	glfwSetInputMode(glfw_window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		sr::log_error("Failed to initialize GLAD!");
@@ -38,8 +39,7 @@ Window::Window(const std::string &title, const int width, const int height, bool
 	glfwSetWindowUserPointer(glfw_window_, this);
 
 	glViewport(0, 0, width_, height_);
-	glfwSetFramebufferSizeCallback(glfw_window_,
-								   glfw_frame_buffer_size_callback);
+	glfwSetFramebufferSizeCallback(glfw_window_, glfw_frame_buffer_size_callback);
 	
 	glEnable(GL_DEPTH_TEST);
 	sr::log_trace("Window constructor completed.");
@@ -80,7 +80,6 @@ void Window::begin_drawing() const {
 
 void Window::end_drawing() const {
 	swap_buffers();
-	poll_events();
 }
 
 void Window::poll_events() const {

@@ -29,11 +29,11 @@ class Window {
 	bool should_close() const;
 	void begin_drawing() const;
 	void end_drawing() const;
+	void poll_events() const;
 	
 	~Window();
 
   private:
-	void poll_events() const;
 	void swap_buffers() const;
 	static void glfw_frame_buffer_size_callback(GLFWwindow *window, int width,
 												int height);

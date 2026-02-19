@@ -3,6 +3,20 @@
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
 
+enum Key {
+	A,
+	S,
+	D,
+	W,
+	ESCAPE,
+};
+
+enum Mouse {
+	LEFT_MOUSE,
+	RIGHT_MOUSE,
+	MIDDLE_MOUSE,
+};
+
 class Input {
 	private:
 		inline static GLFWwindow* window_ = nullptr;
@@ -18,6 +32,11 @@ class Input {
 		static void update();
 		static glm::vec2 get_mouse_position();
 		static glm::vec2 get_mouse_delta();
+		static bool is_key_pressed(Key key);
+		static bool is_mouse_pressed(Mouse mouse);
+		
 	private:
+		static int to_glfw_key(Key key);
+		static int to_glfw_mouse(Mouse mouse);
 		static void mouse_pos_callback(GLFWwindow* window, double x_pos, double y_pos);
 };
