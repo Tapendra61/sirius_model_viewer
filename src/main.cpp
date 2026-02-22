@@ -1,10 +1,12 @@
+#include<iostream>
+
 #include "sirius_logger/log.h"
 #include "core/application.h"
 #include "sirius_logger/log_level.h"
 
 int main(int argc, char **argv) {
 	sr::init_logger(sr::LogLevel::Info);
-	sr::log_info("Main Program run.");
+	sr::log_trace("Main Program run.");
 	
 	AppConfig config;
 	config.window_title =  "Sirius Model Viewer";
