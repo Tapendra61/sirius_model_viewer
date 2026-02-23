@@ -7,6 +7,8 @@ class IndexBuffer {
 		
 	public:
 		IndexBuffer(unsigned int count, const unsigned int* data);
+		IndexBuffer(const IndexBuffer&)=delete;
+		IndexBuffer& operator=(const IndexBuffer&)=delete;
 		~IndexBuffer();
 		
 		unsigned int get_count() const { return count_; }
