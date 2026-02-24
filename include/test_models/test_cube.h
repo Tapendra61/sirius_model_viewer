@@ -4,12 +4,13 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "buffers/vertex_buffer.h"
 #include "renderer/shader.h"
 #include "renderer/camera.h"
 
 class TestCube {
 	private:
-			static constexpr float cube_vertices_[216] = {
+		static constexpr float cube_vertices_[216] = {
 		    // Positions          // Normals
 		
 		    // ---- Front (+Z) ----
@@ -66,7 +67,8 @@ class TestCube {
 		    -0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,
 		    -0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f
 		};
-		unsigned int cube_vao_ = 0, cube_vbo_ = 0;
+		unsigned int cube_vao_ = 0;
+		VertexBuffer cube_vbo_;
 		Shader cube_shader_;
 		Camera& camera_;
 		glm::vec3 position_ = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -79,12 +81,9 @@ class TestCube {
 		
 		void init() {
 			glGenVertexArrays(1, &cube_vao_);
-			glGenBuffers(1, &cube_vbo_);
-			
 			glBindVertexArray(cube_vao_);
-			glBindBuffer(GL_ARRAY_BUFFER, cube_vbo_);
 			
-			glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices_), cube_vertices_, GL_STATIC_DRAW);
+			cube_vbo_ = VertexBuffer(sizeof(cube_vertices_), cube_vertices_);
 			
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(0);
