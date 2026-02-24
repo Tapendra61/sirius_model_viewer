@@ -8,8 +8,27 @@ IndexBuffer::IndexBuffer(unsigned int count, const unsigned int* data) : count_(
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW);
 }
 
+IndexBuffer::IndexBuffer(IndexBuffer&& other) noexcept : index_buffer_id_(other.index_buffer_id_) {
+	other.index_buffer_id_ = 0;
+}
+
+IndexBuffer& IndexBuffer::operator=(IndexBuffer&& other) noexcept {
+	if(this != &other) {
+		if(index_buffer_id_ != 0) {
+			glDeleteBuffers(1, &index_buffer_id_);
+		}
+		
+		index_buffer_id_ = other.index_buffer_id_;
+		other.index_buffer_id_ = 0;
+	}
+	
+	return *this;
+}
+
 IndexBuffer::~IndexBuffer() {
-	glDeleteBuffers(1, &index_buffer_id_);
+	if(index_buffer_id_ != 0) {
+		glDeleteBuffers(1, &index_buffer_id_);
+	}
 }
 
 void IndexBuffer::bind() const {
