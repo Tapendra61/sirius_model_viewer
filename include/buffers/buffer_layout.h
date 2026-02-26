@@ -25,8 +25,11 @@ class BufferLayout {
 	public:
 		BufferLayout() : stride_(0) {}
 		
+		const std::vector<BufferElement>& get_buffer_elements() const { return buffer_elements_; }
+		uint32_t get_stride() const { return stride_; }
+		
 		// push by GL type
-		void push(GLenum gl_type, unsigned int count, bool normalized = false, uint32_t location = UINT32_MAX) {
+		void push(uint32_t location, unsigned int count, GLenum gl_type, bool normalized = false) {
 			BufferElement element(location, count, gl_type, normalized);
 			buffer_elements_.push_back(element);
 			recompute_offset_and_stride();
