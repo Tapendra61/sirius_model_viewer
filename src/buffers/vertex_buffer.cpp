@@ -2,15 +2,15 @@
 
 #include "glad/glad.h"
 
-VertexBuffer::VertexBuffer(const unsigned int size, const void* data) : size_(size) {
+VertexBuffer::VertexBuffer(const unsigned int size, const void* data) : size_in_bytes_(size) {
 	glGenBuffers(1, &vertex_buffer_id_);
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_id_);
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
 
-VertexBuffer::VertexBuffer(VertexBuffer&& other) noexcept : vertex_buffer_id_(other.vertex_buffer_id_), size_(other.size_), buffer_layout_(other.buffer_layout_) {
+VertexBuffer::VertexBuffer(VertexBuffer&& other) noexcept : vertex_buffer_id_(other.vertex_buffer_id_), size_in_bytes_(other.size_in_bytes_), buffer_layout_(other.buffer_layout_) {
 	other.vertex_buffer_id_ = 0;
-	other.size_ = 0;
+	other.size_in_bytes_ = 0;
 }
 
 VertexBuffer& VertexBuffer::operator=(VertexBuffer&& other) noexcept {
@@ -20,11 +20,11 @@ VertexBuffer& VertexBuffer::operator=(VertexBuffer&& other) noexcept {
 		}
 		
 		vertex_buffer_id_ = other.vertex_buffer_id_;
-		size_ = other.size_;
+		size_in_bytes_ = other.size_in_bytes_;
 		buffer_layout_ = other.buffer_layout_;
 
 		other.vertex_buffer_id_ = 0;
-		other.size_ = 0;
+		other.size_in_bytes_ = 0;
 	}
 	
 	return *this;
@@ -38,7 +38,7 @@ void VertexBuffer::unbind() const {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-VertexBuffer::~VertexBuffer() {
+VertexBuffer::~VertexBuffer() noexcept {
 	if(vertex_buffer_id_ != 0) {
 		glDeleteBuffers(1, &vertex_buffer_id_);
 	}
