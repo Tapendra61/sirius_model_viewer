@@ -34,6 +34,21 @@ class BufferLayout {
 		
 	private:
 		void recompute_offset_and_stride() {
-			
+			uint32_t offset = 0;
+			for(BufferElement &element: buffer_elements_) {
+				element.offset = offset;
+				uint32_t size = element.count * size_of_gltype(element.type);
+				offset += size;
+			}
+			stride_ = offset;
+		}
+		
+		static uint32_t size_of_gltype(GLenum type) {
+			switch(type) {
+				case GL_FLOAT: return sizeof(float);
+				case GL_UNSIGNED_INT: return sizeof(unsigned int);
+				case GL_UNSIGNED_BYTE: return sizeof(unsigned char);
+				default: return 0;
+			}
 		}
 };
