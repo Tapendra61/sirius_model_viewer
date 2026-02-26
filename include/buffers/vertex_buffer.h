@@ -4,7 +4,7 @@ class VertexBuffer{
 	private:
 		unsigned int vertex_buffer_id_ = 0;
 	
-	public:	
+	public:
 		VertexBuffer()=default;
 		VertexBuffer(const unsigned int size, const void* data);
 		VertexBuffer (const VertexBuffer& )=delete;
