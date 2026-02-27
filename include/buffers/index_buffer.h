@@ -6,6 +6,7 @@ class IndexBuffer {
 		unsigned int count_ = 0;
 		
 	public:
+		IndexBuffer()=default;
 		IndexBuffer(unsigned int count, const unsigned int* data);
 		IndexBuffer(const IndexBuffer&)=delete;
 		IndexBuffer& operator=(const IndexBuffer&)=delete;
