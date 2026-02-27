@@ -19,6 +19,7 @@ class VertexArray {
 		VertexArray& operator=(const VertexArray&)=delete;
 		VertexArray(VertexArray&& other) noexcept;
 		VertexArray& operator=(VertexArray&& other) noexcept;
+		~VertexArray() noexcept;
 		
 		void bind() const;
 		void unbind() const;

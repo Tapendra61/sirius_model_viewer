@@ -15,6 +15,7 @@ add_executable(model_viewer
 	src/controllers/camera_controller.cpp
 	src/buffers/vertex_buffer.cpp
 	src/buffers/index_buffer.cpp
+	src/buffers/vertex_array.cpp
 )
 
 target_compile_features(model_viewer PRIVATE cxx_std_20)
