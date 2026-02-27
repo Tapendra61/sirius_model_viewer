@@ -71,8 +71,8 @@ void VertexArray::add_vertex_buffer(const VertexBuffer& vbo) {
 	
 	vertex_buffers_.push_back(&vbo);
 	
-	unbind();
 	vbo.unbind();
+	unbind();
 }
 
 void VertexArray::set_index_buffer(const IndexBuffer& ibo) {

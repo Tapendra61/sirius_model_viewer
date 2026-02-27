@@ -1,12 +1,14 @@
 #pragma once
 
-#include "glad/glad.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include"glad/glad.h"
+#include"glm/glm.hpp"
+#include"glm/gtc/matrix_transform.hpp"
 
-#include "buffers/vertex_buffer.h"
-#include "renderer/shader.h"
-#include "renderer/camera.h"
+#include"buffers/vertex_array.h"
+#include"buffers/vertex_buffer.h"
+#include"buffers/buffer_layout.h"
+#include"renderer/shader.h"
+#include"renderer/camera.h"
 
 class TestCube {
 	private:
@@ -67,7 +69,7 @@ class TestCube {
 		    -0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,
 		    -0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f
 		};
-		unsigned int cube_vao_ = 0;
+		VertexArray cube_vao_;
 		VertexBuffer cube_vbo_;
 		Shader cube_shader_;
 		Camera& camera_;
@@ -80,17 +82,15 @@ class TestCube {
 		void set_position(const glm::vec3 new_position) { position_ = new_position; }
 		
 		void init() {
-			glGenVertexArrays(1, &cube_vao_);
-			glBindVertexArray(cube_vao_);
-			
 			cube_vbo_ = VertexBuffer(sizeof(cube_vertices_), cube_vertices_);
 			
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(0);
+			BufferLayout layout;
 			
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (3 * sizeof(float)));
-			glEnableVertexAttribArray(1);
-			glBindVertexArray(0);
+			layout.push_typed<float>(0, 3);
+			layout.push_typed<float>(1, 3);
+			cube_vbo_.set_layout(layout);
+			
+			cube_vao_.add_vertex_buffer(cube_vbo_);
 		}
 		
 		void draw() {
@@ -106,7 +106,8 @@ class TestCube {
 			cube_shader_.set_mat4("view", view);
 			cube_shader_.set_mat4("projection", projection);
 			
-			glBindVertexArray(cube_vao_);
+			cube_vao_.bind();
 			glDrawArrays(GL_TRIANGLES, 0, 36);
+			cube_vao_.unbind();
 		}
 };
