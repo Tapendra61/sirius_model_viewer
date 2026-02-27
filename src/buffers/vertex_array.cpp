@@ -59,7 +59,7 @@ void VertexArray::add_vertex_buffer(const VertexBuffer& vbo) {
 			glVertexAttribPointer(location, element.count, element.type, element.normalized ? GL_TRUE : GL_FALSE, stride, (const void*)(uintptr_t)element.offset);
 		}
 		else if(element.type == GL_UNSIGNED_INT) {
-			glVertexAttribIPointer(location, element.count, element.type, element.normalized ? GL_TRUE : GL_FALSE, stride, (const void*)(uintptr_t)element.offset);
+			glVertexAttribIPointer(location, element.count, element.type, stride, (const void*)(uintptr_t)element.offset);
 		}
 		else if(element.type == GL_UNSIGNED_BYTE) {
 			glVertexAttribPointer(location, element.count, element.type, element.normalized ? GL_TRUE : GL_FALSE, stride, (const void*)(uintptr_t)element.offset);
@@ -73,4 +73,11 @@ void VertexArray::add_vertex_buffer(const VertexBuffer& vbo) {
 	
 	unbind();
 	vbo.unbind();
+}
+
+void VertexArray::set_index_buffer(const IndexBuffer& ibo) {
+	bind();
+	ibo.bind();
+	index_buffer_ = &ibo;
+	unbind();
 }
