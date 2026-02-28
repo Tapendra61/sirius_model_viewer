@@ -23,3 +23,9 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& ind
 	vao_.add_vertex_buffer(vbo_);
 	vao_.set_index_buffer(ibo_);
 }
+
+void Mesh::draw() const {
+	vao_.bind();
+	glDrawElements(GL_TRIANGLES, index_count_, GL_UNSIGNED_INT, nullptr);
+	vao_.unbind();
+}
