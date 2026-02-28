@@ -22,6 +22,12 @@ class Mesh {
 		IndexBuffer ibo_;
 		uint32_t index_count_ = 0;
 	public:
+		Mesh()=default;
 		Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
+		Mesh(const Mesh&)=delete;
+		Mesh& operator=(const Mesh&)=delete;
+		Mesh (Mesh&& other)=default;
+		Mesh& operator=(Mesh&& other)=default;
+		
 		void draw() const;
 };

@@ -1,15 +1,15 @@
 #pragma once
 
-#include"glad/glad.h"
-#include"glm/glm.hpp"
-#include"glm/gtc/matrix_transform.hpp"
+#include <vector>
 
-#include"sirius_logger/log.h"
-#include"buffers/vertex_array.h"
-#include"buffers/vertex_buffer.h"
-#include"buffers/buffer_layout.h"
-#include"renderer/shader.h"
-#include"renderer/camera.h"
+#include "glad/glad.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
+#include "sirius_logger/log.h"
+#include "model/mesh.h"
+#include "renderer/shader.h"
+#include "renderer/camera.h"
 
 class TestCube {
 	private:
@@ -77,32 +77,43 @@ class TestCube {
 		    22, 23, 20
 		};
 		
-		VertexArray cube_vao_;
-		VertexBuffer cube_vbo_;
-		IndexBuffer cube_ibo_;
+		Mesh cube_mesh_;
 		Shader cube_shader_;
 		Camera& camera_;
 		glm::vec3 position_ = glm::vec3(0.0f, 0.0f, 0.0f);
 	
 	public:
-		TestCube(Camera& camera) : camera_(camera), cube_shader_("../shaders/test_cube/vertex.vert", "../shaders/test_cube/fragment.frag") {}
+		TestCube(Camera& camera) :
+		camera_(camera), cube_shader_("../shaders/test_cube/vertex.vert", "../shaders/test_cube/fragment.frag") {}
 		
 		glm::vec3 get_position() const { return position_; }
 		void set_position(const glm::vec3 new_position) { position_ = new_position; }
 		
 		void init() {
-			cube_vbo_ = VertexBuffer(sizeof(cube_vertices_), cube_vertices_);
-			cube_ibo_ = IndexBuffer(sizeof(cube_indices_)/sizeof(unsigned int), cube_indices_);
-			BufferLayout layout;
+			std::vector<Vertex> vertices;
+			vertices.reserve(24);
 			
-			sr::log_info("IBO count: {}", cube_ibo_.get_count());
+			for(int i = 0; i < 24; i++) {
+				Vertex v;
+				v.position = glm::vec3(
+					cube_vertices_[i * 6 + 0],
+					cube_vertices_[i * 6 + 1],
+					cube_vertices_[i * 6 + 2]
+				);
+				
+				v.normal = glm::vec3(
+					cube_vertices_[i * 6 + 3],
+					cube_vertices_[i * 6 + 4],
+					cube_vertices_[i * 6 + 5]
+				);
+				
+				v.tex_coords = glm::vec2(0.0f, 0.0f);
+				
+				vertices.push_back(v);
+			}
 			
-			layout.push_typed<float>(0, 3);
-			layout.push_typed<float>(1, 3);
-			cube_vbo_.set_layout(layout);
-			
-			cube_vao_.add_vertex_buffer(cube_vbo_);
-			cube_vao_.set_index_buffer(cube_ibo_);
+			std::vector<uint32_t> indices(std::begin(cube_indices_), std::end(cube_indices_));
+			cube_mesh_ = Mesh(vertices, indices);
 		}
 		
 		void draw() {
@@ -118,8 +129,6 @@ class TestCube {
 			cube_shader_.set_mat4("view", view);
 			cube_shader_.set_mat4("projection", projection);
 			
-			cube_vao_.bind();
-			glDrawElements(GL_TRIANGLES, cube_ibo_.get_count(), GL_UNSIGNED_INT, nullptr);
-			cube_vao_.unbind();
+			cube_mesh_.draw();
 		}
 };
