@@ -84,12 +84,7 @@ class TestCube {
 	
 	public:
 		TestCube(Camera& camera) :
-		camera_(camera), cube_shader_("../shaders/test_cube/vertex.vert", "../shaders/test_cube/fragment.frag") {}
-		
-		glm::vec3 get_position() const { return position_; }
-		void set_position(const glm::vec3 new_position) { position_ = new_position; }
-		
-		void init() {
+		camera_(camera), cube_shader_("../shaders/test_cube/vertex.vert", "../shaders/test_cube/fragment.frag") {
 			std::vector<Vertex> vertices;
 			vertices.reserve(24);
 			
@@ -115,6 +110,9 @@ class TestCube {
 			std::vector<uint32_t> indices(std::begin(cube_indices_), std::end(cube_indices_));
 			cube_mesh_ = Mesh(vertices, indices);
 		}
+		
+		glm::vec3 get_position() const { return position_; }
+		void set_position(const glm::vec3 new_position) { position_ = new_position; }
 		
 		void draw() {
 			cube_shader_.use();

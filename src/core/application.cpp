@@ -38,7 +38,6 @@ void Application::init() {
 	sr::log_trace("Application init called.");
 	
 	cube_ = std::make_unique<TestCube>(camera_);
-	cube_->init();
 	camera_.set_camera_target(cube_->get_position());
 	Input::init(window_->get_raw_window_handle());
 	renderer_->init();

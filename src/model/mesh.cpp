@@ -27,5 +27,4 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& ind
 void Mesh::draw() const {
 	vao_.bind();
 	glDrawElements(GL_TRIANGLES, index_count_, GL_UNSIGNED_INT, nullptr);
-	vao_.unbind();
 }
