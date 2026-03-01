@@ -37,8 +37,10 @@ void Application::init() {
 	if(initialized_) return;
 	sr::log_trace("Application init called.");
 	
-	cube_ = std::make_unique<TestCube>(camera_);
-	camera_.set_camera_target(cube_->get_position());
+	//cube_ = std::make_unique<TestCube>(camera_); only for testing
+	head_model_ = std::make_unique<Model>("../resources/models/female_head.obj");
+	
+	//camera_.set_camera_target(cube_->get_position());
 	Input::init(window_->get_raw_window_handle());
 	renderer_->init();
 	
@@ -59,7 +61,7 @@ void Application::run() {
 		
 		window_->begin_drawing();
 		
-		renderer_->render(cube_);
+		renderer_->render(head_model_);
 		
 		window_->end_drawing();
 		Input::update();
