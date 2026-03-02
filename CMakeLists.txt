@@ -6,12 +6,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 add_executable(model_viewer
 	src/main.cpp
 	src/glad.c
+	src/stbi.cpp
 	src/core/application.cpp
 	src/core/window.cpp
 	src/core/input.cpp
 	src/renderer/renderer.cpp
 	src/renderer/shader.cpp
 	src/renderer/camera.cpp
+	src/renderer/texture.cpp
 	src/controllers/camera_controller.cpp
 	src/buffers/vertex_buffer.cpp
 	src/buffers/index_buffer.cpp

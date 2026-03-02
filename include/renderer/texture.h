@@ -10,11 +10,11 @@ class Texture {
 		int channels_ = 0;
 		
 	public:
-		Texture(const std::string& path);
+		Texture(const std::string& path, bool gamma_corrected = false);
 		Texture(const Texture&)=delete;
 		Texture& operator=(const Texture&)=delete;
-		Texture(Texture&& other);
-		Texture& operator=(Texture&& other);
+		Texture(Texture&& other) noexcept;
+		Texture& operator=(Texture&& other) noexcept;
 		
 		~Texture();
 		
