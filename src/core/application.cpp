@@ -38,7 +38,7 @@ void Application::init() {
 	sr::log_trace("Application init called.");
 	
 	//cube_ = std::make_unique<TestCube>(camera_); only for testing
-	head_model_ = std::make_unique<Model>("../resources/models/female_head.obj");
+	head_model_ = std::make_unique<Model>(app_config_.model_path);
 	
 	//camera_.set_camera_target(cube_->get_position());
 	Input::init(window_->get_raw_window_handle());
