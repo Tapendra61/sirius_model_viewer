@@ -27,6 +27,8 @@ class Input {
 		inline static glm::vec2 last_mouse_position_{0.0f};
 		inline static bool first_mouse_ = true;
 		
+		inline static float scroll_delta_ = 0.0f;
+		
 	public:
 		static void init(GLFWwindow* window);
 		static void update();
@@ -39,4 +41,5 @@ class Input {
 		static int to_glfw_key(Key key);
 		static int to_glfw_mouse(Mouse mouse);
 		static void mouse_pos_callback(GLFWwindow* window, double x_pos, double y_pos);
+		static void mouse_scroll_callback(GLFWwindow* window, double x_offset, double y_offset);
 };

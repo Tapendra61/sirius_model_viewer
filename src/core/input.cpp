@@ -3,10 +3,12 @@
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
 
+#include "sirius_logger/log.h"
 
 void Input::init(GLFWwindow* window) {
 	window_ = window;
 	glfwSetCursorPosCallback(window_, mouse_pos_callback);
+	glfwSetScrollCallback(window_, mouse_scroll_callback);
 }
 
 void Input::mouse_pos_callback(GLFWwindow* window, double x_pos, double y_pos) {
@@ -24,6 +26,10 @@ void Input::mouse_pos_callback(GLFWwindow* window, double x_pos, double y_pos) {
 	mouse_position_ = { x_position, y_position };
 	mouse_delta_ = mouse_position_ - last_mouse_position_;
 	last_mouse_position_ = mouse_position_;
+}
+
+void Input::mouse_scroll_callback(GLFWwindow* window, double x_offset, double y_offset) {
+	scroll_delta_ = static_cast<float>(y_offset);
 }
 
 glm::vec2 Input::get_mouse_delta() {
@@ -70,4 +76,5 @@ int Input::to_glfw_mouse(Mouse mouse) {
 
 void Input::update() {
 	mouse_delta_ = { 0.0f, 0.0f };
+	scroll_delta_ = 0.0f;
 }
