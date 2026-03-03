@@ -29,5 +29,5 @@ void Renderer::render(std::unique_ptr<Model>& model) {
 	shader_.set_mat4("view", view);
 	shader_.set_mat4("projection", projection);
 	
-	model->draw(shader_);
+	model->draw();
 }

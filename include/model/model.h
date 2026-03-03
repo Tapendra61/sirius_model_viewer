@@ -20,7 +20,7 @@ class Model {
 		Model(Model&& other)=default;
 		Model& operator=(Model&& other)=default;
 		
-		void draw(const Shader& shader) const;
+		void draw() const;
 		
 	private:
 		void load_model();

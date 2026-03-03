@@ -84,9 +84,7 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 	return Mesh(vertices, indices);
 }
 
-void Model::draw(const Shader& shader) const {
-	shader.use();
-	
+void Model::draw() const {
 	for(auto& mesh: meshes_) {
 		mesh.draw();
 	}

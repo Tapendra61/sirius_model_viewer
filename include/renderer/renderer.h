@@ -9,9 +9,8 @@
 
 class Renderer {
 	private:
-		
-	Camera& camera_;
-	Shader shader_;
+		Camera& camera_;
+		Shader shader_;
 	
 	public:
 		Renderer(Camera& camera) : camera_(camera), shader_("../shaders/test_cube/vertex.vert", "../shaders/test_cube/fragment.frag") {}
