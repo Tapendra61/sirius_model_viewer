@@ -6,7 +6,7 @@
 #include "assimp/scene.h"
 
 #include "model/mesh.h"
-
+#include "renderer/shader.h"
 
 class Model {
 	private:
@@ -20,7 +20,7 @@ class Model {
 		Model(Model&& other)=default;
 		Model& operator=(Model&& other)=default;
 		
-		void draw() const;
+		void draw(const Shader& shader) const;
 		
 	private:
 		void load_model();

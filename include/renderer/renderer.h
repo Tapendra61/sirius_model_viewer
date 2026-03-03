@@ -11,10 +11,10 @@ class Renderer {
 	private:
 		
 	Camera& camera_;
-	Shader head_shader_;
+	Shader shader_;
 	
 	public:
-		Renderer(Camera& camera) : camera_(camera), head_shader_("../shaders/test_cube/vertex.vert", "../shaders/test_cube/fragment.frag") {}
+		Renderer(Camera& camera) : camera_(camera), shader_("../shaders/test_cube/vertex.vert", "../shaders/test_cube/fragment.frag") {}
 		void init();
-		void render(std::unique_ptr<Model>& head_model);
+		void render(std::unique_ptr<Model>& model);
 };

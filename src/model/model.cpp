@@ -9,6 +9,7 @@
 #include "assimp/postprocess.h"
 #include "glm/glm.hpp"
 
+#include "renderer/shader.h"
 #include "sirius_logger/log.h"
 #include "model/mesh.h"
 
@@ -18,7 +19,7 @@ Model::Model(std::string model_path) : model_path_(std::move(model_path)) {
 
 void Model::load_model() {
 	Assimp::Importer importer;
-	const aiScene* ai_scene = importer.ReadFile(model_path_, aiProcess_Triangulate);
+	const aiScene* ai_scene = importer.ReadFile(model_path_, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
 	
 	if(!ai_scene || ai_scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !ai_scene->mRootNode) {
 		sr::log_error("Failed to load model! Error: {}", importer.GetErrorString());
@@ -83,7 +84,9 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 	return Mesh(vertices, indices);
 }
 
-void Model::draw() const {
+void Model::draw(const Shader& shader) const {
+	shader.use();
+	
 	for(auto& mesh: meshes_) {
 		mesh.draw();
 	}

@@ -13,21 +13,21 @@ void Renderer::init() {
 	sr::log_trace("Renderer Init called.");
 }
 
-void Renderer::render(std::unique_ptr<Model>& head_model) {
-	head_shader_.use();
+void Renderer::render(std::unique_ptr<Model>& model) {
+	shader_.use();
 	
-	glm::mat4 model(1.0f);
+	glm::mat4 model_matrix(1.0f);
 	
-	model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.07f, 0.07f, 0.07f));
-	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, -90.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(-90.0f, -0.0f, 0.0f));
+	model_matrix = glm::translate(model_matrix, glm::vec3(0.0f, -1.0f, 0.0f));
+	model_matrix = glm::scale(model_matrix, glm::vec3(0.07f, 0.07f, 0.07f));
+	model_matrix = glm::rotate(model_matrix, glm::radians(90.0f), glm::vec3(0.0f, -90.0f, 0.0f));
+	model_matrix = glm::rotate(model_matrix, glm::radians(90.0f), glm::vec3(-90.0f, -0.0f, 0.0f));
 	glm::mat4 view = camera_.get_view_matrix();
 	glm::mat4 projection = camera_.get_projection_matrix();
 	
-	head_shader_.set_mat4("model", model);
-	head_shader_.set_mat4("view", view);
-	head_shader_.set_mat4("projection", projection);
+	shader_.set_mat4("model", model_matrix);
+	shader_.set_mat4("view", view);
+	shader_.set_mat4("projection", projection);
 	
-	head_model->draw();
+	model->draw(shader_);
 }
