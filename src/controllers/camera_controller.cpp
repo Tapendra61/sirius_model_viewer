@@ -22,4 +22,6 @@ void CameraController::update(float delta_time) {
 		camera_.add_yaw(Input::get_mouse_delta().x * move_sensitivity_ * delta_time);
 		camera_.add_pitch(Input::get_mouse_delta().y * move_sensitivity_ * delta_time);
 	}
+	
+	camera_.add_radius(-Input::get_scroll_delta() * scroll_sensitivity_);
 }

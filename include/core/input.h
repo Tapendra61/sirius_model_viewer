@@ -34,6 +34,8 @@ class Input {
 		static void update();
 		static glm::vec2 get_mouse_position();
 		static glm::vec2 get_mouse_delta();
+		static float get_scroll_delta() { return scroll_delta_ ;}
+		
 		static bool is_key_pressed(Key key);
 		static bool is_mouse_pressed(Mouse mouse);
 		

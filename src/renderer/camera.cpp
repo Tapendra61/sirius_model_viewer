@@ -51,6 +51,7 @@ void Camera::add_pitch(float delta_rad) {
 void Camera::add_radius(float delta) {
 	radius_ += delta;
 	radius_ = glm::max(radius_, 0.1f);
+	update_camera_vectors();
 }
 
 void Camera::update_camera_vectors() {
