@@ -10,7 +10,9 @@ class CameraController {
 		
 	public:
 		CameraController(Camera& camera);
-		void set_sensitivity(float value) { move_sensitivity_ = value; }
+		float get_move_sensitivity() const { return move_sensitivity_; }
+		float get_scroll_sensitivity() const { return scroll_sensitivity_; }
+		void set_move_sensitivity(float value) { move_sensitivity_ = value; }
 		void set_scroll_sensitivity(float value) { scroll_sensitivity_ = value; }
 		
 		void update(float delta_time);
