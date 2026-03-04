@@ -34,13 +34,13 @@ void Model::process_node(aiNode* node, const aiScene* scene, const glm::mat4& pa
 	glm::mat4 node_transform = matrix_to_column_major(node->mTransformation);
 	glm::mat4 global_transform = parent_transform * node_transform;
 	
-	for(int i = 0; i < node->mNumMeshes; i++) {
+	for(unsigned int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		Mesh processed_mesh = process_mesh(mesh, scene);
 		meshes_.push_back({ std::move(processed_mesh), global_transform });
 	}
 	
-	for(int i = 0; i < node->mNumChildren; i++) {
+	for(unsigned int i = 0; i < node->mNumChildren; i++) {
 		process_node(node->mChildren[i], scene, global_transform);
 	}
 }
@@ -106,15 +106,10 @@ glm::mat4 Model::matrix_to_column_major(const aiMatrix4x4& matrix) const {
 	return result;
 }
 
-void Model::draw(const glm::mat4& world_model_matrix) const {
+void Model::draw(const Shader& shader, const glm::mat4& world_model_matrix) const {
 	for(auto& entry: meshes_) {
 		glm::mat4 final_model_matrix = world_model_matrix * entry.transform;
-		
-		int current_program_id = 0;
-		glGetIntegerv(GL_CURRENT_PROGRAM, &current_program_id);
-		
-		if (current_program_id != 0)
-			glUniformMatrix4fv(glGetUniformLocation(current_program_id, "model"), 1, GL_FALSE, &final_model_matrix[0][0]);
+		shader.set_mat4("model", final_model_matrix);
 		
 		entry.mesh.draw();
 	}

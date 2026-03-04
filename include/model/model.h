@@ -25,7 +25,7 @@ class Model {
 		Model(Model&& other)=default;
 		Model& operator=(Model&& other)=default;
 		
-		void draw(const glm::mat4& world_model_matrix) const;
+		void draw(const Shader& shader, const glm::mat4& world_model_matrix) const;
 		
 	private:
 		void load_model();
