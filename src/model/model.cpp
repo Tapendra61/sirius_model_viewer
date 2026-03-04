@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 
+#include "glad/glad.h"
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
@@ -88,25 +89,33 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 	return Mesh(vertices, indices);
 }
 
-glm::mat4 matrix_to_column_major(const aiMatrix4x4& matrix) const {
+glm::mat4 Model::matrix_to_column_major(const aiMatrix4x4& matrix) const {
 	glm::mat4 result;
-	result[0][0] = matix.a1; result[1][0] = matix.a2;
-	result[2][0] = matix.a3; result[3][0] = matix.a4;
+	result[0][0] = matrix.a1; result[1][0] = matrix.a2;
+	result[2][0] = matrix.a3; result[3][0] = matrix.a4;
 	
-	result[0][1] = matix.b1; result[1][1] = matix.b2;
-	result[2][1] = matix.b3; result[3][1] = matix.b4;
+	result[0][1] = matrix.b1; result[1][1] = matrix.b2;
+	result[2][1] = matrix.b3; result[3][1] = matrix.b4;
 	
-	result[0][2] = matix.c1; result[1][2] = matix.c2;
-	result[2][2] = matix.c3; result[3][2] = matix.c4;
+	result[0][2] = matrix.c1; result[1][2] = matrix.c2;
+	result[2][2] = matrix.c3; result[3][2] = matrix.c4;
 	
-	result[0][3] = matix.d1; result[1][3] = matix.d2;
-	result[2][3] = matix.d3; result[3][3] = matix.d4;
+	result[0][3] = matrix.d1; result[1][3] = matrix.d2;
+	result[2][3] = matrix.d3; result[3][3] = matrix.d4;
 	
 	return result;
 }
 
-void Model::draw() const {
-	for(auto& mesh: meshes_) {
-		mesh.draw();
+void Model::draw(const glm::mat4& world_model_matrix) const {
+	for(auto& entry: meshes_) {
+		glm::mat4 final_model_matrix = world_model_matrix * entry.transform;
+		
+		int current_program_id = 0;
+		glGetIntegerv(GL_CURRENT_PROGRAM, &current_program_id);
+		
+		if (current_program_id != 0)
+			glUniformMatrix4fv(glGetUniformLocation(current_program_id, "model"), 1, GL_FALSE, &final_model_matrix[0][0]);
+		
+		entry.mesh.draw();
 	}
 }
