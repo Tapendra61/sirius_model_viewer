@@ -19,7 +19,7 @@ void Renderer::render(std::unique_ptr<Model>& model) {
 	glm::mat4 model_matrix(1.0f);
 	
 	model_matrix = glm::translate(model_matrix, glm::vec3(0.0f, -1.0f, 0.0f));
-	model_matrix = glm::scale(model_matrix, glm::vec3(0.07f, 0.07f, 0.07f));
+	model_matrix = glm::scale(model_matrix, glm::vec3(0.08f, 0.08f, 0.08f));
 	model_matrix = glm::rotate(model_matrix, glm::radians(90.0f), glm::vec3(0.0f, -90.0f, 0.0f));
 	model_matrix = glm::rotate(model_matrix, glm::radians(90.0f), glm::vec3(-90.0f, -0.0f, 0.0f));
 	glm::mat4 view = camera_.get_view_matrix();

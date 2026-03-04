@@ -26,17 +26,21 @@ void Model::load_model() {
 		return;
 	}
 	
-	process_node(ai_scene->mRootNode, ai_scene);
+	process_node(ai_scene->mRootNode, ai_scene, glm::mat4(1.0f));
 }
 
-void Model::process_node(aiNode* node, const aiScene* scene) {
+void Model::process_node(aiNode* node, const aiScene* scene, const glm::mat4& parent_transform) {
+	glm::mat4 node_transform = matrix_to_column_major(node->mTransformation);
+	glm::mat4 global_transform = parent_transform * node_transform;
+	
 	for(int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes_.push_back(process_mesh(mesh, scene));
+		Mesh processed_mesh = process_mesh(mesh, scene);
+		meshes_.push_back({ std::move(processed_mesh), global_transform });
 	}
 	
 	for(int i = 0; i < node->mNumChildren; i++) {
-		process_node(node->mChildren[i], scene);
+		process_node(node->mChildren[i], scene, global_transform);
 	}
 }
 
@@ -82,6 +86,23 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 	}
 	
 	return Mesh(vertices, indices);
+}
+
+glm::mat4 matrix_to_column_major(const aiMatrix4x4& matrix) const {
+	glm::mat4 result;
+	result[0][0] = matix.a1; result[1][0] = matix.a2;
+	result[2][0] = matix.a3; result[3][0] = matix.a4;
+	
+	result[0][1] = matix.b1; result[1][1] = matix.b2;
+	result[2][1] = matix.b3; result[3][1] = matix.b4;
+	
+	result[0][2] = matix.c1; result[1][2] = matix.c2;
+	result[2][2] = matix.c3; result[3][2] = matix.c4;
+	
+	result[0][3] = matix.d1; result[1][3] = matix.d2;
+	result[2][3] = matix.d3; result[3][3] = matix.d4;
+	
+	return result;
 }
 
 void Model::draw() const {
