@@ -8,12 +8,14 @@
 
 #include "model/mesh.h"
 #include "renderer/shader.h"
+#include "renderer/material.h"
 
 class Model {
 	private:
 		struct MeshEntry {
 			Mesh mesh;
 			glm::mat4 transform;
+			Material material;
 		};
 		std::string model_path_;
 		std::vector<MeshEntry> meshes_;
