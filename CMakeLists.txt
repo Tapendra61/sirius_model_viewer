@@ -27,6 +27,7 @@ target_compile_features(model_viewer PRIVATE cxx_std_20)
 target_include_directories(model_viewer PRIVATE
    ${CMAKE_SOURCE_DIR}/include
    ${CMAKE_SOURCE_DIR}/dependencies/include
+   ${CMAKE_SOURCE_DIR}/dependencies/include/common
 )
 
 target_link_libraries(model_viewer PRIVATE
