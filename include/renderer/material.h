@@ -17,8 +17,8 @@ class Material {
 		float shininess_ = 32.0f;
 		
 	public:
-		void set_diffuse(std::shared_ptr<Texture> texture) { diffuse_ = texture; }
-		void set_specular(std::shared_ptr<Texture> texture) { specular_ = texture; }
-		void set_normal(std::shared_ptr<Texture> texture) { normal_ = texture; }
+		void set_diffuse(std::shared_ptr<Texture> texture) { diffuse_ = std::move(texture); }
+		void set_specular(std::shared_ptr<Texture> texture) { specular_ = std::move(texture); }
+		void set_normal(std::shared_ptr<Texture> texture) { normal_ = std::move(texture); }
 		void bind(const Shader& shader) const;
 };
