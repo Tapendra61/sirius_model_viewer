@@ -14,6 +14,7 @@ add_executable(model_viewer
 	src/renderer/shader.cpp
 	src/renderer/camera.cpp
 	src/renderer/texture.cpp
+	src/renderer/material.cpp
 	src/controllers/camera_controller.cpp
 	src/buffers/vertex_buffer.cpp
 	src/buffers/index_buffer.cpp

@@ -22,5 +22,5 @@ void Material::bind(const Shader& shader) const {
 	}
 	
 	shader.set_vec4("material.base_color", base_color_);
-	shader.set_vec4("material.shininess", shininess_);
+	shader.set_float("material.shininess", shininess_);
 }
