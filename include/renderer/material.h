@@ -13,7 +13,7 @@ class Material {
 		std::shared_ptr<Texture> specular_;
 		std::shared_ptr<Texture> normal_;
 		
-		glm::vec3 base_color_ = glm::vec3(1.0f);
+		glm::vec4 base_color_ = glm::vec4(1.0f);
 		float shininess_ = 32.0f;
 		
 	public:
