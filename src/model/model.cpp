@@ -11,6 +11,7 @@
 #include "glm/glm.hpp"
 
 #include "renderer/shader.h"
+#include "renderer/material.h"
 #include "sirius_logger/log.h"
 #include "model/mesh.h"
 
@@ -37,6 +38,8 @@ void Model::process_node(aiNode* node, const aiScene* scene, const glm::mat4& pa
 	for(unsigned int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		Mesh processed_mesh = process_mesh(mesh, scene);
+		Material processed_material = process_material(scene->mMaterials[mesh->mMaterialIndex]);
+		
 		meshes_.push_back({ std::move(processed_mesh), global_transform });
 	}
 	
@@ -87,6 +90,12 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 	}
 	
 	return Mesh(vertices, indices);
+}
+
+Material Model::process_material(aiMaterial* ai_material) {
+	Material material;
+	
+	return material;
 }
 
 glm::mat4 Model::matrix_to_column_major(const aiMatrix4x4& matrix) const {
