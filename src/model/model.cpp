@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <memory>
 
 #include "glad/glad.h"
 #include "assimp/Importer.hpp"
@@ -11,6 +12,7 @@
 #include "glm/glm.hpp"
 
 #include "renderer/shader.h"
+#include "renderer/texture.h"
 #include "renderer/material.h"
 #include "sirius_logger/log.h"
 #include "model/mesh.h"
@@ -28,6 +30,7 @@ void Model::load_model() {
 		return;
 	}
 	
+	directory_path_ = model_path_.substr(0, model_path_.find_last_of('/'));
 	process_node(ai_scene->mRootNode, ai_scene, glm::mat4(1.0f));
 }
 
@@ -94,6 +97,26 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 
 Material Model::process_material(aiMaterial* ai_material) {
 	Material material;
+	
+	if(ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
+		aiString str;
+		ai_material->GetTexture(aiTextureType_DIFFUSE, 0, &str);
+		
+		std::string full_path = directory_path_ + "/" + str.C_Str();
+		sr::log_info("Full path: {}", full_path);
+		
+		material.set_diffuse(std::make_shared<Texture>(full_path));
+	}
+	
+	if(ai_material->GetTextureCount(aiTextureType_SPECULAR) > 0) {
+		aiString str;
+		ai_material->GetTexture(aiTextureType_SPECULAR, 0, &str);
+		
+		std::string full_path = directory_path_ + "/" + str.C_Str();
+		sr::log_info("Full path: {}", full_path);
+		
+		material.set_specular(std::make_shared<Texture>(full_path));
+	}
 	
 	return material;
 }

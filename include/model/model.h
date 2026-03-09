@@ -18,6 +18,7 @@ class Model {
 			Material material;
 		};
 		std::string model_path_;
+		std::string directory_path_ = "";
 		std::vector<MeshEntry> meshes_;
 		
 	public:
