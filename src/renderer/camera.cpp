@@ -54,6 +54,14 @@ void Camera::add_radius(float delta) {
 	update_camera_vectors();
 }
 
+void Camera::pan(const glm::vec2& delta) {
+	glm::vec3 camera_up = glm::normalize(glm::cross(camera_right_, camera_forward_));
+	
+	glm::vec3 offset = -camera_right_ * delta.x + camera_up * delta.y;
+	camera_target_ += offset;
+	camera_position_ += offset;
+}
+
 void Camera::update_camera_vectors() {
 	glm::vec3 target(0.0f);
 	target.x = radius_ * cos(yaw_) * cos(pitch_);

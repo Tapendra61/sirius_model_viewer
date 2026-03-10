@@ -43,6 +43,7 @@ class Camera {
 		void add_yaw(float delta);
 		void add_pitch(float delta);
 		void add_radius(float delta);
+		void pan(const glm::vec2& delta);
 		
 		void update_camera_vectors();
 };
