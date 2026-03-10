@@ -33,6 +33,9 @@ Texture::Texture(const std::string& path, bool gamma_corrected) {
 	if(channels_ == 1) {
 		internal_format = GL_R8;
 		format = GL_RED;
+	}else if(channels_ == 2) {
+		internal_format = GL_RG8;
+		format = GL_RG;
 	}else if(channels_ == 3) {
 		internal_format = gamma_corrected ? GL_SRGB8 : GL_RGB8;
 		format = GL_RGB;
@@ -41,7 +44,7 @@ Texture::Texture(const std::string& path, bool gamma_corrected) {
 		format = GL_RGBA;
 	}
 	else {
-		sr::log_error("Unknown image format!");
+		sr::log_error("Unknown image format while loading from: {}", path);
 		throw std::runtime_error("Unknown image format!");
 	}
 	
@@ -52,6 +55,7 @@ Texture::Texture(const std::string& path, bool gamma_corrected) {
 	stbi_image_free(data);
 	
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 }
 
 Texture::Texture(Texture&& other) noexcept :

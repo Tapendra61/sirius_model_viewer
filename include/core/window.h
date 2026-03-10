@@ -36,6 +36,5 @@ class Window {
 
   private:
 	void swap_buffers() const;
-	static void glfw_frame_buffer_size_callback(GLFWwindow *window, int width,
-												int height);
+	static void glfw_frame_buffer_size_callback(GLFWwindow *window, int width, int height);
 };

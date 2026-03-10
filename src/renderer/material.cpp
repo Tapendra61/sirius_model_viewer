@@ -5,6 +5,12 @@
 void Material::bind(const Shader& shader) const {
 	unsigned int slot = 0;
 	
+	if(albedo_) {
+		albedo_->bind(slot);
+		shader.set_int("material.albedo", slot);
+		slot++;
+	}
+	
 	if(diffuse_) {
 		diffuse_->bind(slot);
 		shader.set_int("material.diffuse", slot);

@@ -9,6 +9,7 @@
 
 class Material {
 	private:
+		std::shared_ptr<Texture> albedo_;
 		std::shared_ptr<Texture> diffuse_;
 		std::shared_ptr<Texture> specular_;
 		std::shared_ptr<Texture> normal_;
@@ -17,6 +18,7 @@ class Material {
 		float shininess_ = 32.0f;
 		
 	public:
+	void set_albedo(std::shared_ptr<Texture> texture) { albedo_ = std::move(texture); }
 		void set_diffuse(std::shared_ptr<Texture> texture) { diffuse_ = std::move(texture); }
 		void set_specular(std::shared_ptr<Texture> texture) { specular_ = std::move(texture); }
 		void set_normal(std::shared_ptr<Texture> texture) { normal_ = std::move(texture); }

@@ -24,3 +24,6 @@ cmake_install.cmake
 # Libs
 dependencies/libs/*.lib
 dependencies/include
+
+# 3d Models
+resources/models/heavy_revolver_concept

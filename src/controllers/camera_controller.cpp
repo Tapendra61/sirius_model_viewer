@@ -1,5 +1,8 @@
 #include "controllers/camera_controller.h"
 
+#include "glm/glm.hpp"
+#include "sirius_logger/log.h"
+
 #include "renderer/camera.h"
 #include "core/input.h"
 
@@ -21,6 +24,13 @@ void CameraController::update(float delta_time) {
 	if(Input::is_mouse_pressed(Mouse::LEFT_MOUSE)) {
 		camera_.add_yaw(Input::get_mouse_delta().x * move_sensitivity_ * delta_time);
 		camera_.add_pitch(Input::get_mouse_delta().y * move_sensitivity_ * delta_time);
+	}
+	else if(Input::is_mouse_pressed(Mouse::MIDDLE_MOUSE)) {
+		glm::vec3 current_camera_target = camera_.get_camera_target();
+		
+		current_camera_target += camera_.get_camera_right() * Input::get_mouse_delta();
+		
+		sr::log_info("Camera target: x={}, y={}", current_camera_target.x, current_camera_target.y);
 	}
 	
 	camera_.add_radius(-Input::get_scroll_delta() * scroll_sensitivity_);

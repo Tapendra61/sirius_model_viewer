@@ -22,6 +22,7 @@ class Camera {
 		
 		const glm::vec3 world_up_ {0.0f, 1.0f, 0.0f};
 		glm::vec3 camera_forward_ = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 camera_right_ = glm::vec3(0.0f, 0.0f, 0.0f);
 		
 		float yaw_ = 0.0f;
 		float pitch_ = 0.0f;
@@ -31,7 +32,10 @@ class Camera {
 		
 		void set_camera_mode(CameraMode new_mode) { camera_mode_ = new_mode; }
 		void set_camera_target(const glm::vec3& new_target) { camera_target_ = new_target; }
+		glm::vec3 get_camera_target() const { return camera_target_; }
 		void update_aspect_ratio(const int new_screen_width, const int new_screen_height);
+		
+		glm::vec3 get_camera_right() const { return camera_right_; }
 		
 		glm::mat4 get_view_matrix() const;
 		glm::mat4 get_projection_matrix() const;

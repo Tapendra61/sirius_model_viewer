@@ -62,4 +62,5 @@ void Camera::update_camera_vectors() {
 	
 	camera_position_ = target + camera_target_;
 	camera_forward_ = glm::normalize(camera_target_ - camera_position_);
+	camera_right_ = glm::normalize(glm::cross(camera_forward_, world_up_));
 }

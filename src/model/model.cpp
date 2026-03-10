@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
+#include <filesystem>
 
 #include "glad/glad.h"
 #include "assimp/Importer.hpp"
@@ -23,14 +24,14 @@ Model::Model(std::string model_path) : model_path_(std::move(model_path)) {
 
 void Model::load_model() {
 	Assimp::Importer importer;
-	const aiScene* ai_scene = importer.ReadFile(model_path_, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+	const aiScene* ai_scene = importer.ReadFile(model_path_, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_FlipUVs);
 	
 	if(!ai_scene || ai_scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !ai_scene->mRootNode) {
 		sr::log_error("Failed to load model! Error: {}", importer.GetErrorString());
 		return;
 	}
 	
-	directory_path_ = model_path_.substr(0, model_path_.find_last_of('/'));
+	directory_path_ = std::filesystem::path(model_path_).parent_path().string();;
 	process_node(ai_scene->mRootNode, ai_scene, glm::mat4(1.0f));
 }
 
@@ -43,7 +44,7 @@ void Model::process_node(aiNode* node, const aiScene* scene, const glm::mat4& pa
 		Mesh processed_mesh = process_mesh(mesh, scene);
 		Material processed_material = process_material(scene->mMaterials[mesh->mMaterialIndex]);
 		
-		meshes_.push_back({ std::move(processed_mesh), global_transform });
+		meshes_.push_back({ std::move(processed_mesh), global_transform, std::move(processed_material) });
 	}
 	
 	for(unsigned int i = 0; i < node->mNumChildren; i++) {
@@ -55,7 +56,7 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 	
-	for(int i = 0; i < mesh->mNumVertices; i++) {
+	for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
 		Vertex vertex{};
 		
 		vertex.position = glm::vec3(
@@ -98,14 +99,25 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 Material Model::process_material(aiMaterial* ai_material) {
 	Material material;
 	
+	sr::log_info("Albedo Texture count: {}", ai_material->GetTextureCount(aiTextureType_BASE_COLOR));
+	
+	aiString albedo_path;
+	
+	if(ai_material->GetTexture(AI_MATKEY_BASE_COLOR_TEXTURE, &albedo_path) == AI_SUCCESS) {
+		sr::log_info("Got an albedo texture! At path: {}", albedo_path.C_Str());
+	} else {
+		sr::log_info("No albedo!");
+	}
+	
 	if(ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
 		aiString str;
 		ai_material->GetTexture(aiTextureType_DIFFUSE, 0, &str);
 		
-		std::string full_path = directory_path_ + "/" + str.C_Str();
+		std::filesystem::path texture_path = str.C_Str();
+		std::filesystem::path full_path = std::filesystem::path(directory_path_) / texture_path;
 		sr::log_info("Full path: {}", full_path);
 		
-		material.set_diffuse(std::make_shared<Texture>(full_path));
+		material.set_diffuse(std::make_shared<Texture>(full_path.string(), true));
 	}
 	
 	if(ai_material->GetTextureCount(aiTextureType_SPECULAR) > 0) {
@@ -139,9 +151,10 @@ glm::mat4 Model::matrix_to_column_major(const aiMatrix4x4& matrix) const {
 }
 
 void Model::draw(const Shader& shader, const glm::mat4& world_model_matrix) const {
-	for(auto& entry: meshes_) {
+	for(const auto& entry: meshes_) {
 		glm::mat4 final_model_matrix = world_model_matrix * entry.transform;
 		shader.set_mat4("model", final_model_matrix);
+		entry.material.bind(shader);
 		
 		entry.mesh.draw();
 	}
