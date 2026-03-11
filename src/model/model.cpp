@@ -83,6 +83,23 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 			vertex.tex_coords = glm::vec2(0.0f);
 		}
 		
+		if(mesh->HasTangentsAndBitangents()) {
+			vertex.tangent = glm::vec3 {
+				mesh->mTangents[i].x,
+				mesh->mTangents[i].y,
+				mesh->mTangents[i].z,
+			};
+			
+			vertex.bitangent = glm::vec3 {
+				mesh->mBitangents[i].x,
+				mesh->mBitangents[i].y,
+				mesh->mBitangents[i].z,
+			};
+		}else {
+			vertex.tangent = glm::vec3(0.0f);
+			vertex.bitangent = glm::vec3(0.0f);
+		}
+		
 		vertices.push_back(vertex);
 	}
 	

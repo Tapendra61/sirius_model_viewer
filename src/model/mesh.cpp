@@ -17,6 +17,8 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& ind
 	layout.push_typed<float>(0, 3); // position
 	layout.push_typed<float>(1, 3); // normal
 	layout.push_typed<float>(2, 2); // tex coord
+	layout.push_typed<float>(3, 3); // tangent
+	layout.push_typed<float>(4, 3); // bitangent
 	
 	vbo_.set_layout(layout);
 	
