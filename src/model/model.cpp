@@ -99,23 +99,12 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 Material Model::process_material(aiMaterial* ai_material) {
 	Material material;
 	
-	sr::log_info("Albedo Texture count: {}", ai_material->GetTextureCount(aiTextureType_BASE_COLOR));
-	
-	aiString albedo_path;
-	
-	if(ai_material->GetTexture(AI_MATKEY_BASE_COLOR_TEXTURE, &albedo_path) == AI_SUCCESS) {
-		sr::log_info("Got an albedo texture! At path: {}", albedo_path.C_Str());
-	} else {
-		sr::log_info("No albedo!");
-	}
-	
 	if(ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
 		aiString str;
 		ai_material->GetTexture(aiTextureType_DIFFUSE, 0, &str);
 		
 		std::filesystem::path texture_path = str.C_Str();
 		std::filesystem::path full_path = std::filesystem::path(directory_path_) / texture_path;
-		sr::log_info("Full path: {}", full_path);
 		
 		material.set_diffuse(std::make_shared<Texture>(full_path.string(), true));
 	}
@@ -123,11 +112,24 @@ Material Model::process_material(aiMaterial* ai_material) {
 	if(ai_material->GetTextureCount(aiTextureType_SPECULAR) > 0) {
 		aiString str;
 		ai_material->GetTexture(aiTextureType_SPECULAR, 0, &str);
-		
 		std::string full_path = directory_path_ + "/" + str.C_Str();
-		sr::log_info("Full path: {}", full_path);
 		
 		material.set_specular(std::make_shared<Texture>(full_path));
+	}
+	
+	if(ai_material->GetTextureCount(aiTextureType_NORMALS) > 0) {
+		aiString str;
+		ai_material->GetTexture(aiTextureType_NORMALS, 0, &str);
+		std::string full_path = directory_path_ + "/" + str.C_Str();
+		
+		material.set_normal(std::make_shared<Texture>(full_path));
+	}
+	else if(ai_material->GetTextureCount(aiTextureType_HEIGHT) > 0) {
+		aiString str;
+		ai_material->GetTexture(aiTextureType_HEIGHT, 0, &str);
+		std::string full_path = directory_path_ + "/" + str.C_Str();
+		
+		material.set_normal(std::make_shared<Texture>(full_path));
 	}
 	
 	return material;
