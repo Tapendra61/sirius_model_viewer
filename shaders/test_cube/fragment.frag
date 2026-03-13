@@ -9,6 +9,9 @@ struct Material {
     sampler2D diffuse;
     sampler2D specular;
     sampler2D normal;
+    bool has_diffuse;
+    bool has_specular;
+    bool has_normal;
 };
 
 uniform Material material;
@@ -17,26 +20,25 @@ const vec3 LIGHT_POS = vec3(-1.0, 3.0, 4.0);
 
 out vec4 frag_color_;
 
-void main() {
-    vec4 result;
-    vec4 ambient = vec4(0.2, 0.2, 0.4, 1.0);
+void main()
+{
+    vec3 albedo = vec3(0.85);           // fallback
+    if (material.has_diffuse)
+        albedo = texture(material.diffuse, tex_coord_).rgb;
 
-    vec3 texture_color = texture(material.diffuse, tex_coord_).rgb;
+    vec3 normal = normalize(normal_);
+    if (material.has_normal)
+    {
+        vec3 normal_map = texture(material.normal, tex_coord_).rgb;
+        normal_map = normal_map * 2.0 - 1.0;
+        normal = normalize(tbn_matrix_ * normal_map);
+    }
 
-    // --- NORMAL MAP ---
-    vec3 normal_map = texture(material.normal, tex_coord_).rgb;
+    vec3 light_dir = normalize(LIGHT_POS - frag_pos_);
+    float diff = max(dot(normal, light_dir), 0.0);
 
-    // Convert from [0,1] → [-1,1]
-    normal_map = normal_map * 2.0 - 1.0;
+    vec3 ambient  = 0.4 * albedo;
+    vec3 diffuse  = diff * albedo * 2.0;   // your original scaling
 
-    // Transform from tangent space → world space
-    vec3 normal = normalize(tbn_matrix_ * normal_map);
-
-    vec3 light_direction = normalize(LIGHT_POS - frag_pos_);
-
-    float diffuse_factor = max(dot(light_direction, normal), 0.0);
-
-    result = (diffuse_factor * vec4(texture_color, 1.0)) + ambient * vec4(texture_color , 1.0);
-
-    frag_color_ = result;
+    frag_color_ = vec4(ambient + diffuse, 1.0);
 }

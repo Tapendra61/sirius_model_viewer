@@ -43,7 +43,7 @@ void Application::init() {
 	Input::init(window_->get_raw_window_handle());
 	renderer_->init();
 	
-	model_->transform().scale_by(glm::vec3(.5f, .5f, .5f));
+	model_->transform().scale_by(glm::vec3(.01f, .01f, .01f));
 	
 	initialized_ = true;
 }
