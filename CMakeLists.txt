@@ -21,6 +21,7 @@ add_executable(model_viewer
 	src/buffers/vertex_array.cpp
 	src/model/mesh.cpp
 	src/model/model.cpp
+	src/components/transform.cpp
 )
 
 target_compile_features(model_viewer PRIVATE cxx_std_20)
