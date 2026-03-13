@@ -114,42 +114,40 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) {
 }
 
 Material Model::process_material(aiMaterial* ai_material) {
-	Material material;
-	
-	if(ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-		aiString str;
-		ai_material->GetTexture(aiTextureType_DIFFUSE, 0, &str);
-		
-		std::filesystem::path texture_path = str.C_Str();
-		std::filesystem::path full_path = std::filesystem::path(directory_path_) / texture_path;
-		
-		material.set_diffuse(std::make_shared<Texture>(full_path.string(), true));
-	}
-	
-	if(ai_material->GetTextureCount(aiTextureType_SPECULAR) > 0) {
-		aiString str;
-		ai_material->GetTexture(aiTextureType_SPECULAR, 0, &str);
-		std::string full_path = directory_path_ + "/" + str.C_Str();
-		
-		material.set_specular(std::make_shared<Texture>(full_path));
-	}
-	
-	if(ai_material->GetTextureCount(aiTextureType_NORMALS) > 0) {
-		aiString str;
-		ai_material->GetTexture(aiTextureType_NORMALS, 0, &str);
-		std::string full_path = directory_path_ + "/" + str.C_Str();
-		
-		material.set_normal(std::make_shared<Texture>(full_path));
-	}
-	else if(ai_material->GetTextureCount(aiTextureType_HEIGHT) > 0) {
-		aiString str;
-		ai_material->GetTexture(aiTextureType_HEIGHT, 0, &str);
-		std::string full_path = directory_path_ + "/" + str.C_Str();
-		
-		material.set_normal(std::make_shared<Texture>(full_path));
-	}
-	
-	return material;
+    Material material;
+
+    if (ai_material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
+        aiString str;
+        ai_material->GetTexture(aiTextureType_DIFFUSE, 0, &str);
+        std::filesystem::path texture_path = str.C_Str();
+        auto full_path = directory_path_ / texture_path;
+        material.set_diffuse(load_texture_cached(full_path.string(), true));
+    }
+
+    if (ai_material->GetTextureCount(aiTextureType_SPECULAR) > 0) {
+        aiString str;
+        ai_material->GetTexture(aiTextureType_SPECULAR, 0, &str);
+        std::filesystem::path texture_path = str.C_Str();
+        auto full_path = directory_path_ / texture_path;
+        material.set_specular(load_texture_cached(full_path.string()));
+    }
+
+    if (ai_material->GetTextureCount(aiTextureType_NORMALS) > 0) {
+        aiString str;
+        ai_material->GetTexture(aiTextureType_NORMALS, 0, &str);
+        std::filesystem::path texture_path = str.C_Str();
+        auto full_path = directory_path_ / texture_path;
+        material.set_normal(load_texture_cached(full_path.string()));
+    }
+    else if (ai_material->GetTextureCount(aiTextureType_HEIGHT) > 0) {
+        aiString str;
+        ai_material->GetTexture(aiTextureType_HEIGHT, 0, &str);
+        std::filesystem::path texture_path = str.C_Str();
+        auto full_path = directory_path_ / texture_path;
+        material.set_normal(load_texture_cached(full_path.string()));
+    }
+
+    return material;
 }
 
 std::shared_ptr<Texture> Model::load_texture_cached(const std::string& path, bool gamma_corrected) {
