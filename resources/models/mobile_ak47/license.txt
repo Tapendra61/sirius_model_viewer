@@ -1,0 +1,11 @@
+Model Information:
+* title:	Pubg Mobile ak47
+* source:	https://sketchfab.com/3d-models/pubg-mobile-ak47-cfbff0a9550a4ae08fcb7f73962bfdf4
+* author:	00amza (https://sketchfab.com/00amza)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Pubg Mobile ak47" (https://sketchfab.com/3d-models/pubg-mobile-ak47-cfbff0a9550a4ae08fcb7f73962bfdf4) by 00amza (https://sketchfab.com/00amza) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
