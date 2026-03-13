@@ -19,7 +19,7 @@ out vec4 frag_color_;
 
 void main() {
     vec4 result;
-    vec4 ambient = vec4(0.4, 0.4, 0.4, 1.0);
+    vec4 ambient = vec4(0.2, 0.2, 0.4, 1.0);
 
     vec3 texture_color = texture(material.diffuse, tex_coord_).rgb;
 
@@ -36,7 +36,7 @@ void main() {
 
     float diffuse_factor = max(dot(light_direction, normal), 0.0);
 
-    result = diffuse_factor * vec4(texture_color, 1.0);
+    result = (diffuse_factor * vec4(texture_color, 1.0)) + ambient * vec4(texture_color , 1.0);
 
     frag_color_ = result;
 }

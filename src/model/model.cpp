@@ -169,9 +169,9 @@ glm::mat4 Model::matrix_to_column_major(const aiMatrix4x4& matrix) const {
 	return result;
 }
 
-void Model::draw(const Shader& shader, const glm::mat4& world_model_matrix) const {
+void Model::draw(const Shader& shader) const {
 	for(const auto& entry: meshes_) {
-		glm::mat4 final_model_matrix = world_model_matrix * entry.transform;
+		glm::mat4 final_model_matrix = transform_.matrix() * entry.transform;
 		shader.set_mat4("model", final_model_matrix);
 		entry.material.bind(shader);
 		

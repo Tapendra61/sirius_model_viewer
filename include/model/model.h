@@ -9,6 +9,8 @@
 #include "model/mesh.h"
 #include "renderer/shader.h"
 #include "renderer/material.h"
+#include "components/transform.h"
+
 
 class Model {
 	private:
@@ -20,6 +22,7 @@ class Model {
 		std::string model_path_;
 		std::string directory_path_ = "";
 		std::vector<MeshEntry> meshes_;
+		Transform transform_;
 		
 	public:
 		Model(std::string model_path);
@@ -28,7 +31,8 @@ class Model {
 		Model(Model&& other)=default;
 		Model& operator=(Model&& other)=default;
 		
-		void draw(const Shader& shader, const glm::mat4& world_model_matrix) const;
+		Transform& transform() { return transform_; }
+		void draw(const Shader& shader) const;
 		
 	private:
 		void load_model();

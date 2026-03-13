@@ -29,8 +29,7 @@ class Application {
 		float delta_time_ = 0.0f;
 		float last_time_ = 0.0f;
 		
-		//std::unique_ptr<TestCube> cube_; only for testing
-		std::unique_ptr<Model> head_model_;
+		std::unique_ptr<Model> model_;
 
 	public:
 		Application(const unsigned int argc, char **argv, AppConfig app_config = AppConfig());

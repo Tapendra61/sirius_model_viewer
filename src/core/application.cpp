@@ -3,6 +3,8 @@
 #include <stdexcept>
 
 #include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
+
 
 #include "sirius_logger/log.h"
 #include "core/window.h"
@@ -29,6 +31,7 @@ Application::Application(const unsigned int argc, char **argv, AppConfig app_con
 	
 	window_ = std::make_unique<Window>(app_config_.window_title, app_config_.window_width, app_config_.window_height, app_config_.enable_vsync);
 	renderer_ = std::make_unique<Renderer>(camera_);
+	model_ = std::make_unique<Model>(app_config_.model_path);
 	
 	sr::log_trace("Application constructor completed.");
 }
@@ -37,12 +40,10 @@ void Application::init() {
 	if(initialized_) return;
 	sr::log_trace("Application init called.");
 	
-	//cube_ = std::make_unique<TestCube>(camera_); only for testing
-	head_model_ = std::make_unique<Model>(app_config_.model_path);
-	
-	//camera_.set_camera_target(cube_->get_position());
 	Input::init(window_->get_raw_window_handle());
 	renderer_->init();
+	
+	model_->transform().scale_by(glm::vec3(.5f, .5f, .5f));
 	
 	initialized_ = true;
 }
@@ -61,7 +62,7 @@ void Application::run() {
 		
 		window_->begin_drawing();
 		
-		renderer_->render(head_model_);
+		renderer_->render(model_);
 		
 		window_->end_drawing();
 		Input::update();
