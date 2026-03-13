@@ -152,6 +152,19 @@ Material Model::process_material(aiMaterial* ai_material) {
 	return material;
 }
 
+std::shared_ptr<Texture> Model::load_texture_cached(const std::string& path, bool gamma_corrected) {
+	auto it = texture_cache_.find(path);
+	
+	if(it != texture_cache_.end()) {
+		return it->second;
+	}
+	
+	auto texture = std::make_shared<Texture>(path, gamma_corrected);
+	texture_cache_[path] = texture;
+	
+	return texture;
+}
+
 glm::mat4 Model::matrix_to_column_major(const aiMatrix4x4& matrix) const {
 	glm::mat4 result;
 	result[0][0] = matrix.a1; result[1][0] = matrix.a2;
