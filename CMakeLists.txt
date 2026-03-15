@@ -22,6 +22,14 @@ add_executable(model_viewer
 	src/model/mesh.cpp
 	src/model/model.cpp
 	src/components/transform.cpp
+	
+	# IMGUI
+	src/imgui.cpp
+	src/imgui_draw.cpp
+	src/imgui_impl_glfw.cpp
+	src/imgui_impl_opengl3.cpp
+	src/imgui_tables.cpp
+	src/imgui_widgets.cpp
 )
 
 target_compile_features(model_viewer PRIVATE cxx_std_20)
@@ -30,6 +38,8 @@ target_include_directories(model_viewer PRIVATE
    ${CMAKE_SOURCE_DIR}/include
    ${CMAKE_SOURCE_DIR}/dependencies/include
    ${CMAKE_SOURCE_DIR}/dependencies/include/common
+   ${CMAKE_SOURCE_DIR}/dependencies/include/imgui
+   ${CMAKE_SOURCE_DIR}/dependencies/include/imgui/backend
 )
 
 target_link_libraries(model_viewer PRIVATE

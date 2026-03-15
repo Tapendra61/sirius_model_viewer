@@ -2,6 +2,10 @@
 
 #include <memory>
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 #include "core/window.h"
 #include "renderer/renderer.h"
 #include "core/input.h"
@@ -45,6 +49,7 @@ class Application {
 		float get_delta_time() const { return delta_time_; }
 		void compute_delta_time();
 		void init();
+		void init_imgui() const;
 		void run();
 		void process_input();
 		~Application();

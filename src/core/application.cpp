@@ -42,8 +42,9 @@ void Application::init() {
 	
 	Input::init(window_->get_raw_window_handle());
 	renderer_->init();
+	init_imgui();
 	
-	model_->transform().scale_by(glm::vec3(.01f, .01f, .01f));
+	model_->transform().scale_by(glm::vec3(.8f, .8f, .8f));
 	
 	initialized_ = true;
 }
@@ -84,6 +85,19 @@ void Application::parse_arguments(const unsigned int argc, char **argv) {
 	if(argc == 2) {
 		app_config_.model_path = argv[1];
 	}
+}
+
+void Application::init_imgui() const {
+	// OpenGL Context and GLAD should be initialized before calling this function
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	
+	ImGui::StyleColorsDark();
+	
+	ImGui_ImplGlfw_InitForOpenGL(window_->get_raw_window_handle(), true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 }
 
 void Application::compute_delta_time() {
