@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "ImGuiFileDialog.h"
 
 #include "core/window.h"
 #include "renderer/renderer.h"
@@ -34,6 +35,8 @@ class Application {
 		float last_time_ = 0.0f;
 		
 		std::unique_ptr<Model> model_;
+		
+		bool show_file_dialog_ = false;
 
 	public:
 		Application(const unsigned int argc, char **argv, AppConfig app_config = AppConfig());

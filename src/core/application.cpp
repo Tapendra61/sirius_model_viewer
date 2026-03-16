@@ -4,6 +4,7 @@
 
 #include "GLFW/glfw3.h"
 #include "glm/glm.hpp"
+#include "ImGuiFileDialog.h"
 
 
 #include "sirius_logger/log.h"
@@ -120,11 +121,25 @@ void Application::show_model_loader_ui() {
 	ImGui::Begin("Model Loader", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 	
 	ImGui::Text("Current Model: %s", app_config_.model_path.empty() ? "None" : app_config_.model_path.c_str());
+
+	// button to load model using file explorer
+	if(ImGui::Button("Open Model")) {
+		IGFD::FileDialogConfig config;
+		
+		ImGuiFileDialog::Instance()->OpenDialog(
+			"ChooseModel",
+			"Choose 3D model",
+			".gltf,.fbx,.obj",
+			config
+		);
+		show_file_dialog_ = true;
+	}
 	
+	// option to load model from explicit path
 	static char new_model_path[512] = "";
 	ImGui::InputText("Model Path", new_model_path, IM_ARRAYSIZE(new_model_path));
 	
-	if(ImGui::Button("Load Model")) {
+	if(ImGui::Button("Load From Path")) {
 		if(std::string(new_model_path).length() > 0) {
 			load_new_model(new_model_path);
 			new_model_path[0] = '\0';
@@ -132,6 +147,26 @@ void Application::show_model_loader_ui() {
 	}
 	
 	ImGui::End();
+	
+	// show the file diaglo
+	if(show_file_dialog_) {
+		if(ImGuiFileDialog::Instance()->Display(
+			"ChooseModel",
+			ImGuiWindowFlags_NoCollapse,
+			ImVec2(800, 600),
+			ImVec2(1000, 800)
+		)) {
+			if(ImGuiFileDialog::Instance()->IsOk()) {
+				std::string file_path = ImGuiFileDialog::Instance()->GetFilePathName();
+				load_new_model(file_path);
+				ImGuiFileDialog::Instance()->Close();
+				show_file_dialog_ = false;
+			}
+			
+			ImGuiFileDialog::Instance()->Close();
+			show_file_dialog_ = false;
+		}
+	}
 }
 
 void Application::load_new_model(const std::string& new_model_path) {

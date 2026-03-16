@@ -30,6 +30,7 @@ add_executable(model_viewer
 	src/imgui_impl_opengl3.cpp
 	src/imgui_tables.cpp
 	src/imgui_widgets.cpp
+	src/ImGuiFileDialog.cpp
 )
 
 target_compile_features(model_viewer PRIVATE cxx_std_20)
