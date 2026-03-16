@@ -52,5 +52,9 @@ class Application {
 		void init_imgui() const;
 		void run();
 		void process_input();
+		
+		// UI elements
+		void show_model_loader_ui();
+		
 		~Application();
 };

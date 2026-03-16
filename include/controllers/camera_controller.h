@@ -7,7 +7,7 @@ class CameraController {
 		Camera& camera_;
 		float move_sensitivity_ = 40.0f;
 		float scroll_sensitivity_ = 0.3f;
-		float pan_sensitivity_ = 1.0f;
+		float pan_sensitivity_ = 20.0f;
 		
 	public:
 		CameraController(Camera& camera);

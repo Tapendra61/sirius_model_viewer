@@ -70,6 +70,8 @@ void Application::run() {
 		// render my scene
 		renderer_->render(model_);
 		
+		show_model_loader_ui();
+		
 		//render imgui elements
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -113,6 +115,14 @@ void Application::compute_delta_time() {
 	float current_time = static_cast<float>(glfwGetTime());
 	delta_time_ = current_time - last_time_;
 	last_time_ = current_time;
+}
+
+void Application::show_model_loader_ui() {
+	ImGui::Begin("Model Loader", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	
+	ImGui::Text("Current Model: %s", app_config_.model_path.empty() ? "None" : app_config_.model_path.c_str());
+	
+	ImGui::End();
 }
 
 Application::~Application() {

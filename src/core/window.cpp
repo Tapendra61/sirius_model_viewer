@@ -30,7 +30,6 @@ Window::Window(const std::string &title, const int width, const int height, bool
 
 	glfwMakeContextCurrent(glfw_window_);
 	glfwSwapInterval(enable_vsync_? 1 : 0);
-	glfwSetInputMode(glfw_window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		sr::log_error("Failed to initialize GLAD!");

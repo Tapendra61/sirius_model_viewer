@@ -61,7 +61,6 @@ bool Input::is_mouse_pressed(Mouse mouse) {
 	
 	int glfw_button = to_glfw_mouse(mouse);
 	if(glfw_button == -1) return false;
-	
 	return glfwGetMouseButton(window_, glfw_button) == GLFW_PRESS;
 }
 
