@@ -16,8 +16,8 @@
 struct AppConfig {
 	std::string model_path = "";
 	std::string window_title = "";
-	int window_width = 900;
-	int window_height = 900;
+	int window_width = 1000;
+	int window_height = 1000;
 	bool enable_vsync = false;
 };
 
@@ -52,7 +52,7 @@ class Application {
 		void init_imgui() const;
 		void run();
 		void process_input();
-		void load_new_model(const char* new_model_path);
+		void load_new_model(const std::string& new_model_path);
 		
 		// UI elements
 		void show_model_loader_ui();

@@ -31,7 +31,6 @@ Application::Application(const unsigned int argc, char **argv, AppConfig app_con
 	
 	window_ = std::make_unique<Window>(app_config_.window_title, app_config_.window_width, app_config_.window_height, app_config_.enable_vsync);
 	renderer_ = std::make_unique<Renderer>(camera_);
-	model_ = std::make_unique<Model>(app_config_.model_path);
 	
 	sr::log_trace("Application constructor completed.");
 }
@@ -44,7 +43,7 @@ void Application::init() {
 	renderer_->init();
 	init_imgui();
 	
-	model_->transform().scale_by(glm::vec3(.8f, .8f, .8f));
+	if(!app_config_.model_path.empty()) load_new_model(app_config_.model_path);
 	
 	initialized_ = true;
 }
@@ -135,8 +134,15 @@ void Application::show_model_loader_ui() {
 	ImGui::End();
 }
 
-void Application::load_new_model(const char* new_model_path) {
-	
+void Application::load_new_model(const std::string& new_model_path) {
+	try {
+		model_ = std::make_unique<Model>(new_model_path);
+		model_->transform().scale_by(glm::vec3(0.8f, 0.8f, 0.8f));
+		app_config_.model_path = new_model_path;
+		sr::log_info("Successfully loaded new model from path: {}", new_model_path);
+	}catch (const std::exception& e) {
+		sr::log_error("Failed to load model from path: {}. Error: {}", new_model_path, e.what());
+	}
 }
 
 Application::~Application() {

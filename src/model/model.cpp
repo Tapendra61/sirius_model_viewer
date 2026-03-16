@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <memory>
 #include <filesystem>
+#include <stdexcept>
 
 #include "glad/glad.h"
 #include "assimp/Importer.hpp"
@@ -27,11 +28,13 @@ void Model::load_model() {
 	const aiScene* ai_scene = importer.ReadFile(model_path_, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_FlipUVs);
 	
 	if(!ai_scene || ai_scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !ai_scene->mRootNode) {
-		sr::log_error("Failed to load model! Error: {}", importer.GetErrorString());
-		return;
+		std::string message = "Failed to load model! Error: ";
+		message += importer.GetErrorString();
+		
+		throw std::runtime_error(message);
 	}
 	
-	directory_path_ = std::filesystem::path(model_path_).parent_path().string();;
+	directory_path_ = std::filesystem::path(model_path_).parent_path().string();
 	process_node(ai_scene->mRootNode, ai_scene, glm::mat4(1.0f));
 }
 
