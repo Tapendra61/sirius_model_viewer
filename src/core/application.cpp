@@ -56,14 +56,23 @@ void Application::run() {
 	
 	while(!window_->should_close()) {
 		compute_delta_time();
-		
 		window_->poll_events();
+		
+		ImGui_ImplGlfw_NewFrame();
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui::NewFrame();
+		
 		process_input();
 		camera_controller_.update(delta_time_);
 		
 		window_->begin_drawing();
 		
+		// render my scene
 		renderer_->render(model_);
+		
+		//render imgui elements
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
 		window_->end_drawing();
 		Input::update();
@@ -107,6 +116,10 @@ void Application::compute_delta_time() {
 }
 
 Application::~Application() {
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+	
 	window_.reset();
 	glfwTerminate();
 	sr::log_trace("Application terminated.");
