@@ -122,7 +122,21 @@ void Application::show_model_loader_ui() {
 	
 	ImGui::Text("Current Model: %s", app_config_.model_path.empty() ? "None" : app_config_.model_path.c_str());
 	
+	static char new_model_path[512] = "";
+	ImGui::InputText("Model Path", new_model_path, IM_ARRAYSIZE(new_model_path));
+	
+	if(ImGui::Button("Load Model")) {
+		if(std::string(new_model_path).length() > 0) {
+			load_new_model(new_model_path);
+			new_model_path[0] = '\0';
+		}
+	}
+	
 	ImGui::End();
+}
+
+void Application::load_new_model(const char* new_model_path) {
+	
 }
 
 Application::~Application() {

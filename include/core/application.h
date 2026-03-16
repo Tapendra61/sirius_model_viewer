@@ -52,6 +52,7 @@ class Application {
 		void init_imgui() const;
 		void run();
 		void process_input();
+		void load_new_model(const char* new_model_path);
 		
 		// UI elements
 		void show_model_loader_ui();
