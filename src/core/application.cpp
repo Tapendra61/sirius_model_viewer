@@ -218,6 +218,14 @@ void Application::show_model_transform_ui() {
 			transform.set_scale(glm::vec3(uniform));
 		}
 		
+		// reset transform
+		if(ImGui::Button("Reset Transform")) {
+			transform.set_position(glm::vec3(0.0f));
+			transform.set_rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
+			transform.set_scale(glm::vec3(1.0f));
+			 last_euler_deg = glm::vec3(0.0f);
+		}
+		
 		ImGui::End();
 	}
 }
