@@ -2,6 +2,7 @@
 
 #include "glm/glm.hpp"
 #include "sirius_logger/log.h"
+#include "imgui.h"
 
 #include "renderer/camera.h"
 #include "core/input.h"
@@ -9,6 +10,13 @@
 CameraController::CameraController(Camera& camera) : camera_(camera) {}
 
 void CameraController::update(float delta_time) {
+	
+	ImGuiIO& io = ImGui::GetIO();
+	
+	if(io.WantCaptureMouse) {
+		return;
+	}
+	
 	if(Input::is_key_pressed(Key::D)) {
 		camera_.add_yaw(glm::radians(move_sensitivity_ * delta_time));
 	}
