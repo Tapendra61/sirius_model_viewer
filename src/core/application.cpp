@@ -71,6 +71,7 @@ void Application::run() {
 		renderer_->render(model_);
 		
 		show_model_loader_ui();
+		show_model_transform_ui();
 		
 		//render imgui elements
 		ImGui::Render();
@@ -177,6 +178,47 @@ void Application::load_new_model(const std::string& new_model_path) {
 		sr::log_info("Successfully loaded new model from path: {}", new_model_path);
 	}catch (const std::exception& e) {
 		sr::log_error("Failed to load model from path: {}. Error: {}", new_model_path, e.what());
+	}
+}
+
+void Application::show_model_transform_ui() {
+	if(model_) {
+		ImGui::Begin("Transform");
+		Transform& transform = model_->transform();
+		
+		// position
+		glm::vec3 pos = transform.get_position();
+		if(ImGui::DragFloat3("Position", &pos.x, 0.01f, -100.0f, 100.0f, "%.2f")) {
+			transform.set_position(pos);
+		}
+		
+		// rotation (UI in degrees)
+		glm::vec3 euler_rad = glm::eulerAngles(transform.get_rotation());
+		glm::vec3 euler_deg = glm::degrees(euler_rad);
+		
+		static glm::vec3 last_euler_deg = euler_deg;
+		if(ImGui::DragFloat3("Rotation", &euler_deg.x, 1.0f, -180.0f, 180.0f, "%.1f")) {
+			if(glm::any(glm::notEqual(euler_deg, last_euler_deg))) {
+				glm::vec3 new_euler_rad = glm::radians(euler_deg);
+				glm::quat new_quat = glm::quat(new_euler_rad);
+				transform.set_rotation(new_quat);
+				last_euler_deg = euler_deg;
+			}
+		}
+		
+		// scale
+		glm::vec3 scale = transform.get_scale();
+		if(ImGui::DragFloat3("Scale", &scale.x, 0.01f, 0.001f, 200.0f, "%.3f")) {
+			transform.set_scale(scale);
+		}
+		
+		// slider for quick scale controll
+		float uniform = (scale.x + scale.y + scale.z) / 3.0f;
+		if(ImGui::SliderFloat("Uniform Scale", &uniform, 0.00001f, 20.0f, "%.2f")) {
+			transform.set_scale(glm::vec3(uniform));
+		}
+		
+		ImGui::End();
 	}
 }
 

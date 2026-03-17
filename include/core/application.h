@@ -59,6 +59,7 @@ class Application {
 		
 		// UI elements
 		void show_model_loader_ui();
+		void show_model_transform_ui();
 		
 		~Application();
 };
