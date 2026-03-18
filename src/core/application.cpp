@@ -160,6 +160,12 @@ void Application::show_model_loader_ui() {
 		camera_controller_.set_move_sensitivity(move_sensitivity);
 	}
 	
+	// Slider to adjust camera pan speed
+	float pan_sensitivity = camera_controller_.get_pan_sensitivity();
+	if(ImGui::SliderFloat("Pan Sensitivity", &pan_sensitivity, 1.0f, 100.0f, "%.1f")) {
+		camera_controller_.set_pan_sensitivity(pan_sensitivity);
+	}
+	
 	ImGui::End();
 	
 	// show the file diaglo
@@ -228,6 +234,11 @@ void Application::show_model_transform_ui() {
 			transform.set_position(glm::vec3(0.0f));
 			transform.set_rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 			transform.set_scale(glm::vec3(1.0f));
+		}
+		
+		// set camera focus to model
+		if(ImGui::Button("Camera to Model")) {
+			camera_.set_camera_target(model_->transform().get_position());
 		}
 		
 		ImGui::End();
