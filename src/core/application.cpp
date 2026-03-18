@@ -147,6 +147,8 @@ void Application::show_model_loader_ui() {
 		}
 	}
 	
+	ImGui::Checkbox("Flip UVs", &flip_uvs_);
+	
 	ImGui::End();
 	
 	// show the file diaglo

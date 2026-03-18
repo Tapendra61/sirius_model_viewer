@@ -37,6 +37,7 @@ class Application {
 		std::unique_ptr<Model> model_;
 		
 		bool show_file_dialog_ = false;
+		bool flip_uvs_ = true;
 
 	public:
 		Application(const unsigned int argc, char **argv, AppConfig app_config = AppConfig());
