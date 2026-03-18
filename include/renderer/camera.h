@@ -29,7 +29,8 @@ class Camera {
 		
 	public:
 		Camera(int screen_width, int screen_height, glm::vec3 camera_position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 camera_target = glm::vec3(0.0f, 0.0f, 0.0f), float field_of_view = 45.0f, float near_plane = 0.1f, float far_plane = 100.0f);
-		
+
+		glm::vec3 get_position() const { return camera_position_; }
 		void set_camera_mode(CameraMode new_mode) { camera_mode_ = new_mode; }
 		void set_camera_target(const glm::vec3& new_target) { camera_target_ = new_target; }
 		glm::vec3 get_camera_target() const { return camera_target_; }

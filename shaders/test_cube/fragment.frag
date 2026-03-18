@@ -16,6 +16,8 @@ struct Material {
 
 uniform Material material;
 
+uniform vec3 view_pos_;
+
 const vec3 LIGHT_POS = vec3(-1.0, 3.0, 4.0);
 
 out vec4 frag_color_;
