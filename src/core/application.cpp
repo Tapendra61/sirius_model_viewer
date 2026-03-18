@@ -193,17 +193,9 @@ void Application::show_model_transform_ui() {
 		}
 		
 		// rotation (UI in degrees)
-		glm::vec3 euler_rad = glm::eulerAngles(transform.get_rotation());
-		glm::vec3 euler_deg = glm::degrees(euler_rad);
-		
-		static glm::vec3 last_euler_deg = euler_deg;
-		if(ImGui::DragFloat3("Rotation", &euler_deg.x, 1.0f, -180.0f, 180.0f, "%.1f")) {
-			if(glm::any(glm::notEqual(euler_deg, last_euler_deg))) {
-				glm::vec3 new_euler_rad = glm::radians(euler_deg);
-				glm::quat new_quat = glm::quat(new_euler_rad);
-				transform.set_rotation(new_quat);
-				last_euler_deg = euler_deg;
-			}
+		glm::vec3 rotation = transform.get_rotation_euler();
+		if(ImGui::DragFloat3("Rotation", &rotation.x, 0.1f, -360.0f, 360.0f, "%.1f")) {
+			transform.set_rotation_euler(rotation);
 		}
 		
 		// scale
@@ -223,7 +215,6 @@ void Application::show_model_transform_ui() {
 			transform.set_position(glm::vec3(0.0f));
 			transform.set_rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 			transform.set_scale(glm::vec3(1.0f));
-			 last_euler_deg = glm::vec3(0.0f);
 		}
 		
 		ImGui::End();
