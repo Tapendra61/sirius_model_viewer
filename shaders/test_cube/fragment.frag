@@ -15,7 +15,6 @@ struct Material {
 };
 
 uniform Material material;
-
 uniform vec3 view_pos_;
 
 const vec3 LIGHT_POS = vec3(-1.0, 3.0, 4.0);
@@ -24,7 +23,7 @@ out vec4 frag_color_;
 
 void main()
 {
-    vec3 albedo = vec3(0.85);           // fallback
+    vec3 albedo = vec3(1.0); // fallback if albedo not found
     if (material.has_diffuse)
         albedo = texture(material.diffuse, tex_coord_).rgb;
 
@@ -36,11 +35,24 @@ void main()
         normal = normalize(tbn_matrix_ * normal_map);
     }
 
-    vec3 light_dir = normalize(LIGHT_POS - frag_pos_);
-    float diff = max(dot(normal, light_dir), 0.0);
+    vec3 light_direction = normalize(LIGHT_POS - frag_pos_);
+    float diff = max(dot(normal, light_direction), 0.0);
+    
+    vec3 ambient  = 1 * albedo;
+    vec3 diffuse  = diff * albedo * 3.0;
 
-    vec3 ambient  = 0.4 * albedo;
-    vec3 diffuse  = diff * albedo * 2.0;   // your original scaling
-
-    frag_color_ = vec4(ambient + diffuse, 1.0);
+    vec3 view_direction = normalize(view_pos_ - frag_pos_);
+    vec3 reflect_direction = reflect(-light_direction, normal);
+    
+    vec3 halfway_direction = normalize(light_direction + view_direction);
+    
+    float specular_factor = pow(max(dot(normal, halfway_direction), 0.0), 32.0);
+    vec3 specular_color = vec3(1.0); // fallback for specular color if no specular texture is found
+    if(material.has_specular) {
+    	specular_color = texture(material.specular, tex_coord_).rgb;
+    }
+    
+    vec3 specular = specular_factor * specular_color;
+    
+    frag_color_ = vec4(ambient + diffuse + specular, 1.0);
 }

@@ -11,7 +11,7 @@ class Camera {
 	private:
 		glm::vec3 camera_position_;
 		glm::vec3 camera_target_;
-		float radius_ = 4.0f;
+		float radius_ = 5.0f;
 		CameraMode camera_mode_ = CameraMode::PERSPECTIVE;
 		float aspect_ratio_;
 		float field_of_view_;
