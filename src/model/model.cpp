@@ -19,13 +19,18 @@
 #include "sirius_logger/log.h"
 #include "model/mesh.h"
 
-Model::Model(std::string model_path) : model_path_(std::move(model_path)) {
-	load_model();
+Model::Model(std::string model_path, bool flip_uvs) : model_path_(std::move(model_path)) {
+	load_model(flip_uvs);
 }
 
-void Model::load_model() {
+void Model::load_model(bool flip_uvs) {
 	Assimp::Importer importer;
-	const aiScene* ai_scene = importer.ReadFile(model_path_, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_FlipUVs);
+	unsigned int import_flags = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace;
+	if(flip_uvs) {
+		import_flags |= aiProcess_FlipUVs;
+	}
+	
+	const aiScene* ai_scene = importer.ReadFile(model_path_, import_flags);
 	
 	if(!ai_scene || ai_scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !ai_scene->mRootNode) {
 		std::string message = "Failed to load model! Error: ";

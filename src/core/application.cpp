@@ -147,7 +147,11 @@ void Application::show_model_loader_ui() {
 		}
 	}
 	
-	ImGui::Checkbox("Flip UVs", &flip_uvs_);
+	if(ImGui::Checkbox("Flip UVs", &flip_uvs_)) {
+		if(!app_config_.model_path.empty()) {
+			load_new_model(app_config_.model_path);
+		}
+	}
 	
 	ImGui::End();
 	
@@ -174,7 +178,7 @@ void Application::show_model_loader_ui() {
 
 void Application::load_new_model(const std::string& new_model_path) {
 	try {
-		model_ = std::make_unique<Model>(new_model_path);
+		model_ = std::make_unique<Model>(new_model_path, flip_uvs_);
 		model_->transform().scale_by(glm::vec3(0.8f, 0.8f, 0.8f));
 		app_config_.model_path = new_model_path;
 		sr::log_info("Successfully loaded new model from path: {}", new_model_path);

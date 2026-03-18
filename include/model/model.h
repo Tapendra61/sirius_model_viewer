@@ -30,7 +30,7 @@ class Model {
 		std::unordered_map<std::string, std::shared_ptr<Texture>> texture_cache_;
 		
 	public:
-		Model(std::string model_path);
+		Model(std::string model_path, bool flip_uvs);
 		Model(const Model&)=delete;
 		Model& operator=(const Model&)=delete;
 		Model(Model&& other)=default;
@@ -40,7 +40,7 @@ class Model {
 		void draw(const Shader& shader) const;
 		
 	private:
-		void load_model();
+		void load_model(bool flip_uvs);
 		void process_node(aiNode* node, const aiScene* scene, const glm::mat4& parent_transform);
 		Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
 		Material process_material(aiMaterial* ai_material);
