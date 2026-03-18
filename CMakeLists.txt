@@ -5,8 +5,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 add_executable(model_viewer
 	src/main.cpp
-	src/glad.c
-	src/stbi.cpp
+	src/thirdparty/glad.c
+	src/thirdparty/stbi.cpp
 	src/core/application.cpp
 	src/core/window.cpp
 	src/core/input.cpp
@@ -24,13 +24,13 @@ add_executable(model_viewer
 	src/components/transform.cpp
 	
 	# IMGUI
-	src/imgui.cpp
-	src/imgui_draw.cpp
-	src/imgui_impl_glfw.cpp
-	src/imgui_impl_opengl3.cpp
-	src/imgui_tables.cpp
-	src/imgui_widgets.cpp
-	src/ImGuiFileDialog.cpp
+	src/thirdparty/imgui.cpp
+	src/thirdparty/imgui_draw.cpp
+	src/thirdparty/imgui_impl_glfw.cpp
+	src/thirdparty/imgui_impl_opengl3.cpp
+	src/thirdparty/imgui_tables.cpp
+	src/thirdparty/imgui_widgets.cpp
+	src/thirdparty/ImGuiFileDialog.cpp
 )
 
 target_compile_features(model_viewer PRIVATE cxx_std_20)

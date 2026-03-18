@@ -147,10 +147,17 @@ void Application::show_model_loader_ui() {
 		}
 	}
 	
+	// Checkbox to flip UVs
 	if(ImGui::Checkbox("Flip UVs", &flip_uvs_)) {
 		if(!app_config_.model_path.empty()) {
 			load_new_model(app_config_.model_path);
 		}
+	}
+	
+	// Slider to adjust camera move speed
+	float move_sensitivity = camera_controller_.get_move_sensitivity();
+	if(ImGui::SliderFloat("Camera Sensitivity", &move_sensitivity, 1.0f, 100.0f, "%.1f")) {
+		camera_controller_.set_move_sensitivity(move_sensitivity);
 	}
 	
 	ImGui::End();
