@@ -225,7 +225,7 @@ void Application::show_model_transform_ui() {
 		
 		// slider for quick scale controll
 		float uniform = (scale.x + scale.y + scale.z) / 3.0f;
-		if(ImGui::SliderFloat("Uniform Scale", &uniform, 0.00001f, 20.0f, "%.2f")) {
+		if(ImGui::SliderFloat("Uniform Scale", &uniform, 0.00001f, 100.0f, "%.2f")) {
 			transform.set_scale(glm::vec3(uniform));
 		}
 		

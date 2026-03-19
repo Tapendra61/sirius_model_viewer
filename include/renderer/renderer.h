@@ -13,7 +13,7 @@ class Renderer {
 		Shader shader_;
 	
 	public:
-		Renderer(Camera& camera) : camera_(camera), shader_("../shaders/test_cube/vertex.vert", "../shaders/test_cube/fragment.frag") {}
+		Renderer(Camera& camera) : camera_(camera), shader_("../shaders/vertex.vert", "../shaders/fragment.frag") {}
 		void init();
 		void render(std::unique_ptr<Model>& model);
 };

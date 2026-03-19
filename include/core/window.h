@@ -11,7 +11,7 @@ class Window {
 	int width_ = 0, height_ = 0;
 	GLFWwindow *glfw_window_ = nullptr;
 	bool enable_vsync_ = false;
-	glm::vec4 clear_color_ = glm::vec4(0.25f);
+	glm::vec4 clear_color_ = glm::vec4(0.40f);
 
   public:
 	Window(const std::string &title, const int width, const int height, bool vsync);
